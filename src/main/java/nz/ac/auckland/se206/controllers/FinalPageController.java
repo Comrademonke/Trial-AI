@@ -24,7 +24,7 @@ public class FinalPageController {
   @FXML private Button noButton;
 
   private Timeline timeline;
-  private final int totalSeconds = 10;
+  private final int totalSeconds = 60;
   private int remainingSeconds = totalSeconds;
 
   /**
@@ -44,7 +44,9 @@ public class FinalPageController {
 
     mediaPlayer.play();
 
-    // Start 10s timer
+    timer.setText(String.format("01:00"));
+
+    // Start 60s timer
     timeline =
         new Timeline(
             new KeyFrame(
