@@ -13,6 +13,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.DraggableMaker;
 
 /**
  * Controller class for the AI Witness chat view. Handles user interactions and communication with
@@ -121,5 +122,22 @@ public class AiWitnessChatController extends ChatControllerCentre {
       clearNoiseBtn.setVisible(true);
       slider.setVisible(false);
     }
+  }
+
+  @FXML
+  private void onClearNoiseBtnClick() {
+    // Make all speech bubbles draggable
+    DraggableMaker.makeDraggable(speechBubble1);
+    DraggableMaker.makeDraggable(speechBubble2);
+    DraggableMaker.makeDraggable(speechBubble3);
+    DraggableMaker.makeDraggable(speechBubble4);
+    DraggableMaker.makeDraggable(speechBubble5);
+    DraggableMaker.makeDraggable(speechBubble6);
+    DraggableMaker.makeDraggable(speechBubble7);
+    DraggableMaker.makeDraggable(speechBubble8);
+    DraggableMaker.makeDraggable(speechBubble9);
+    DraggableMaker.makeDraggable(speechBubble10);
+    DraggableMaker.makeDraggable(speechBubble11);
+    DraggableMaker.makeDraggable(speechBubble12);
   }
 }
