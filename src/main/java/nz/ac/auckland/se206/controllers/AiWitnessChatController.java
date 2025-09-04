@@ -31,6 +31,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
   @FXML private Slider slider;
   @FXML private VBox flashbackMessage;
   private final Map<ImageView, Label> speechBubbleLabels = new HashMap<>();
+  private Label instructionLabel;
 
   @FXML private ImageView speechBubble1;
   @FXML private ImageView speechBubble2;
@@ -60,6 +61,16 @@ public class AiWitnessChatController extends ChatControllerCentre {
     setupSpeechBubbleTexts();
     hideAllSpeechBubbles();
     clearNoiseBtn.setVisible(false);
+
+    // Create and style the instruction label
+    instructionLabel = new Label("Drag the rumours into the bin");
+    instructionLabel.setStyle(
+        "-fx-font-size: 50px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7);"
+            + " -fx-padding: 10px;");
+    instructionLabel.setLayoutX(50); // Center horizontally
+    instructionLabel.setLayoutY(200); // Position near top
+    instructionLabel.setVisible(false);
+    ((AnchorPane) slider.getParent()).getChildren().add(instructionLabel);
 
     slider
         .valueProperty()
@@ -240,6 +251,18 @@ public class AiWitnessChatController extends ChatControllerCentre {
 
   @FXML
   private void onClearNoiseBtnClick() {
+    // Show the instruction label
+    instructionLabel.setVisible(true);
+
+    // Create a fade transition for the instruction
+    javafx.animation.FadeTransition fadeOut =
+        new javafx.animation.FadeTransition(Duration.seconds(3), instructionLabel);
+    fadeOut.setFromValue(1.0);
+    fadeOut.setToValue(0.0);
+    fadeOut.setDelay(Duration.seconds(2)); // Stay visible for 2 seconds before fading
+    fadeOut.setOnFinished(e -> instructionLabel.setVisible(false));
+    fadeOut.play();
+
     // Make the StackPanes containing bubbles and text draggable with bin detection
     for (ImageView bubble :
         new ImageView[] {
