@@ -1,16 +1,23 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.DraggableMaker;
@@ -24,6 +31,8 @@ public class AiWitnessChatController extends ChatControllerCentre {
   @FXML private TextArea txtaChat;
   @FXML private Slider slider;
   @FXML private VBox flashbackMessage;
+  private final Map<ImageView, Label> speechBubbleLabels = new HashMap<>();
+
   @FXML private ImageView speechBubble1;
   @FXML private ImageView speechBubble2;
   @FXML private ImageView speechBubble3;
@@ -47,6 +56,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
       e.printStackTrace();
     }
     flashbackMessage.setVisible(true);
+    setupSpeechBubbleTexts();
     hideAllSpeechBubbles();
     clearNoiseBtn.setVisible(false);
 
@@ -84,60 +94,114 @@ public class AiWitnessChatController extends ChatControllerCentre {
     speechBubble10.setVisible(false);
     speechBubble11.setVisible(false);
     speechBubble12.setVisible(false);
+
+    // Hide all labels
+    for (Label label : speechBubbleLabels.values()) {
+      label.setVisible(false);
+    }
+  }
+
+  private void addTextToSpeechBubble(ImageView bubble, String text) {
+    // Create label
+    Label label = new Label(text);
+    label.setWrapText(true);
+    label.setTextAlignment(TextAlignment.CENTER);
+    label.setAlignment(Pos.CENTER);
+    label.setPrefWidth(bubble.getFitWidth());
+    label.setPrefHeight(bubble.getFitHeight());
+
+    // Create StackPane to hold both bubble and text
+    StackPane stack = new StackPane();
+    stack.setLayoutX(bubble.getLayoutX());
+    stack.setLayoutY(bubble.getLayoutY());
+
+    // Remove bubble from its current parent and add to stack
+    AnchorPane parent = (AnchorPane) bubble.getParent();
+    parent.getChildren().remove(bubble);
+    stack.getChildren().addAll(bubble, label);
+    parent.getChildren().add(stack);
+
+    // Reset the layout
+    bubble.setLayoutX(0);
+    bubble.setLayoutY(0);
+
+    label.setVisible(false); // Always start hidden
+    speechBubbleLabels.put(bubble, label);
+  }
+
+  private void setupSpeechBubbleTexts() {
+    addTextToSpeechBubble(speechBubble1, "The latest project was...");
+    addTextToSpeechBubble(speechBubble2, "I heard they were working on AI");
+    addTextToSpeechBubble(speechBubble3, "Some kind of AI system");
+    addTextToSpeechBubble(speechBubble4, "The project involved");
+    addTextToSpeechBubble(speechBubble5, "Training on data");
+    addTextToSpeechBubble(speechBubble6, "Musicians weren't happy");
+    addTextToSpeechBubble(speechBubble7, "Something about Music...");
+    addTextToSpeechBubble(speechBubble8, "Using AI to generate");
+    addTextToSpeechBubble(speechBubble9, "Without permission...");
+    addTextToSpeechBubble(speechBubble10, "Copying their style");
+    addTextToSpeechBubble(speechBubble11, "It was unethical");
+    addTextToSpeechBubble(speechBubble12, "The whole story is clear now...");
   }
 
   private void showSpeechBubble(int value) {
     hideAllSpeechBubbles();
     if (value >= 2) {
-      speechBubble2.setVisible(true);
+      showBubbleWithText(speechBubble2);
     }
     if (value >= 3) {
-      speechBubble1.setVisible(true);
+      showBubbleWithText(speechBubble1);
     }
     if (value >= 4) {
-      speechBubble7.setVisible(true);
+      showBubbleWithText(speechBubble7);
     }
     if (value >= 5) {
-      speechBubble4.setVisible(true);
+      showBubbleWithText(speechBubble4);
     }
     if (value >= 6) {
-      speechBubble8.setVisible(true);
+      showBubbleWithText(speechBubble8);
     }
     if (value >= 7) {
-      speechBubble5.setVisible(true);
+      showBubbleWithText(speechBubble5);
     }
     if (value >= 8) {
-      speechBubble3.setVisible(true);
+      showBubbleWithText(speechBubble3);
     }
     if (value >= 9) {
-      speechBubble9.setVisible(true);
-      speechBubble10.setVisible(true);
+      showBubbleWithText(speechBubble9);
+      showBubbleWithText(speechBubble10);
     }
     if (value >= 10) {
-      speechBubble6.setVisible(true);
-      speechBubble11.setVisible(true);
+      showBubbleWithText(speechBubble6);
+      showBubbleWithText(speechBubble11);
     }
     if (value >= 11) {
-      speechBubble12.setVisible(true);
+      showBubbleWithText(speechBubble12);
       clearNoiseBtn.setVisible(true);
       slider.setVisible(false);
     }
   }
 
+  private void showBubbleWithText(ImageView bubble) {
+    bubble.setVisible(true);
+    Label label = speechBubbleLabels.get(bubble);
+    if (label != null) {
+      label.setVisible(true);
+    }
+  }
+
   @FXML
   private void onClearNoiseBtnClick() {
-    // Make all speech bubbles draggable
-    DraggableMaker.makeDraggable(speechBubble1);
-    DraggableMaker.makeDraggable(speechBubble2);
-    DraggableMaker.makeDraggable(speechBubble3);
-    DraggableMaker.makeDraggable(speechBubble4);
-    DraggableMaker.makeDraggable(speechBubble5);
-    DraggableMaker.makeDraggable(speechBubble6);
-    DraggableMaker.makeDraggable(speechBubble7);
-    DraggableMaker.makeDraggable(speechBubble8);
-    DraggableMaker.makeDraggable(speechBubble9);
-    DraggableMaker.makeDraggable(speechBubble10);
-    DraggableMaker.makeDraggable(speechBubble11);
-    DraggableMaker.makeDraggable(speechBubble12);
+    // Make the StackPanes containing bubbles and text draggable
+    for (ImageView bubble :
+        new ImageView[] {
+          speechBubble1, speechBubble2, speechBubble3, speechBubble4,
+          speechBubble5, speechBubble6, speechBubble7, speechBubble8,
+          speechBubble9, speechBubble10, speechBubble11, speechBubble12
+        }) {
+      if (bubble.getParent() instanceof StackPane) {
+        DraggableMaker.makeDraggable((StackPane) bubble.getParent());
+      }
+    }
   }
 }
