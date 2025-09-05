@@ -253,7 +253,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
   private void onClearNoiseBtnClick() {
     // Show the instruction label
     instructionLabel.setVisible(true);
-    rumourBin.setVisible(false);
+    rumourBin.setVisible(true);
 
     // Create a fade transition for the instruction
     javafx.animation.FadeTransition fadeOut =
