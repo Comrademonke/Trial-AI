@@ -5,6 +5,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.TimerManager;
@@ -13,6 +16,12 @@ public class DefendantMemoryController {
 
   @FXML private Label timer;
   @FXML private ProgressBar progressBar;
+  @FXML private StackPane scene1;
+  @FXML private StackPane scene2;
+  @FXML private StackPane scene3;
+  @FXML private Slider slidingBar;
+  @FXML private ImageView image1;
+  @FXML private ImageView image2;
 
   @FXML
   public void initialize() throws ApiProxyException {
@@ -37,6 +46,31 @@ public class DefendantMemoryController {
             (obs, oldVal, newVal) -> {
               applyColor(newVal.doubleValue());
             });
+
+    slidingBar
+        .valueProperty()
+        .addListener(
+            (obs, oldVal, newVal) -> {
+              showDialogue(newVal.intValue());
+            });
+  }
+
+  private void showDialogue(int value) {
+    if (value == 1) {
+      image1.setVisible(true);
+      scene1.setVisible(true);
+    } else if (value == 2) {
+      image1.setVisible(true);
+      scene2.setVisible(true);
+    } else if (value == 3) {
+      image1.setVisible(true);
+      scene3.setVisible(true);
+    } else if (value == 4) {
+      scene1.setVisible(false);
+      scene2.setVisible(false);
+      scene3.setVisible(false);
+      image1.setVisible(false);
+    }
   }
 
   private void applyColor(double progress) {
