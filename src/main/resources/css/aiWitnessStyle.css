@@ -39,22 +39,23 @@
 /* Base button style */
 .clear-noise-button {
   -fx-background-color: #1a1a1a;
-  -fx-text-fill: #00ffe7;
+  -fx-text-fill: #379bc3;
   -fx-font-family: "Consolas";
   -fx-font-size: 16px;
   -fx-font-weight: bold;
   -fx-padding: 10 20;
-  -fx-border-color: #00ffe7;
+  -fx-border-color: #379bc3;
   -fx-border-width: 2;
   -fx-border-radius: 5;
   -fx-background-radius: 5;
-  -fx-effect: dropshadow(gaussian, #00ffe7, 4, 0.4, 0, 0);
+  -fx-effect: dropshadow(gaussian, #379bc3, 4, 0.4, 0, 0);
 }
 
 /* Subtle hover glitch effect */
 .clear-noise-button:hover {
   -fx-background-color: #1a1a1a;
-  -fx-text-fill: #ff3c00;
-  -fx-border-color: #ff3c00;
-  -fx-effect: dropshadow(gaussian, #ff3c00, 6, 0.6, 1, 1);
+  -fx-text-fill: #b55c43;
+  -fx-border-color: #b55c43;
+  -fx-effect: dropshadow(gaussian, #b55c43, 6, 0.6, 1, 1),
+    dropshadow(gaussian, #379bc3, 6, 0.6, -1, -1);
 }
