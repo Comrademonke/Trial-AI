@@ -107,6 +107,18 @@ public class App extends Application {
 
       // Second time talking
     } else {
+      // Temporary solution to make 2nd+ clicks show flashback chat scene
+      if (profession.equals("AI Defendant")) {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/defendant.fxml"));
+        Parent root = loader.load();
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        return;
+      }
+
       FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
       Parent root = loader.load();
 
