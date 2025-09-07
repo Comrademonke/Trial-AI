@@ -47,6 +47,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
   @FXML private ImageView speechBubble12;
   @FXML private Button clearNoiseBtn;
   @FXML private ImageView rumourBin;
+  private Label completionLabel;
 
   @Override
   @FXML
@@ -71,6 +72,28 @@ public class AiWitnessChatController extends ChatControllerCentre {
     instructionLabel.setLayoutY(200); // Position near top
     instructionLabel.setVisible(false);
     ((AnchorPane) slider.getParent()).getChildren().add(instructionLabel);
+
+    // Create and style the completion label
+    completionLabel =
+        new Label(
+            "The AI witness testimony is unreliable.\n"
+                + "Rumours replace facts,\n"
+                + "and the truth is lost.");
+    completionLabel.setStyle(
+        "-fx-font-size: 40px; -fx-text-fill: #528deb; -fx-background-color: rgba(0, 0, 0, 0.8);"
+            + " -fx-padding: 20px; -fx-background-radius: 10px; -fx-text-alignment: center;");
+    completionLabel.setTextAlignment(TextAlignment.CENTER);
+    completionLabel.setAlignment(Pos.CENTER);
+    completionLabel.setPrefWidth(400); // Slightly smaller than the AnchorPane width
+    completionLabel.setWrapText(true); // Enable text wrapping
+    completionLabel.setLayoutX(301 + (435 - 400) / 2); // Center horizontally in AnchorPane
+    completionLabel.setLayoutY(164 + 356 / 2 - 150); // Center vertically in AnchorPane
+    completionLabel.setVisible(false);
+    // Add the completion label to the AnchorPane at (301, 164)
+    AnchorPane messagePane = (AnchorPane) ((AnchorPane) slider.getParent()).lookup("AnchorPane");
+    if (messagePane != null) {
+      messagePane.getChildren().add(completionLabel);
+    }
 
     slider
         .valueProperty()
@@ -245,8 +268,30 @@ public class AiWitnessChatController extends ChatControllerCentre {
             if (label != null) {
               label.setVisible(false);
             }
+            checkAllBubblesHidden();
           }
         });
+  }
+
+  private void checkAllBubblesHidden() {
+    // Check if all speech bubbles are hidden
+    boolean allHidden = true;
+    for (ImageView bubble :
+        new ImageView[] {
+          speechBubble1, speechBubble2, speechBubble3, speechBubble4,
+          speechBubble5, speechBubble6, speechBubble7, speechBubble8,
+          speechBubble9, speechBubble10, speechBubble11, speechBubble12
+        }) {
+      if (bubble.getParent() instanceof StackPane && bubble.getParent().isVisible()) {
+        allHidden = false;
+        break;
+      }
+    }
+
+    if (allHidden) {
+      // Simply show the completion message
+      completionLabel.setVisible(true);
+    }
   }
 
   @FXML
