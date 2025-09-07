@@ -16,6 +16,7 @@
   <children>
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0">
       <children>
+      <!-- Background Images -->
         <ImageView fx:id="image2" fitHeight="560.0" fitWidth="879.0" layoutX="-45.0" layoutY="110.0" preserveRatio="true">
           <image>
             <Image url="@../images/defendantCalling.png" />
@@ -27,25 +28,26 @@
           </image>
         </ImageView>
 
+        <!-- Top Section -->
         <Label layoutX="-2.0" layoutY="-7.0" prefHeight="123.0" prefWidth="796.0" style="-fx-background-color: #000;" />
-        <Button layoutX="25.0" layoutY="29.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="52.0" prefWidth="130.0" text="Go Back" />
-          <Label fx:id="timer" layoutX="639.0" layoutY="23.0" prefHeight="63.0" prefWidth="155.0" text="2:00" textFill="WHITE">
+        <Label fx:id="timer" layoutX="639.0" layoutY="23.0" prefHeight="63.0" prefWidth="155.0" text="5:00" textFill="WHITE">
             <font>
               <Font size="50.0" />
-            </font></Label>
+            </font>
+        </Label>
         <ProgressBar fx:id="progressBar" layoutX="-1.0" layoutY="104.0" prefHeight="20.0" prefWidth="790.0" progress="0.0" />
-        <Label layoutX="334.0" layoutY="30.0" style="-fx-background-color: #000;" text=" This is a memory!" textFill="WHITE">
+        <Label layoutX="118.0" layoutY="26.0" style="-fx-background-color: #000;" text=" This is a memory! Please use the slide bar to follow " textFill="WHITE">
           <font>
             <Font size="20.0" />
           </font>
         </Label>
-        <Label layoutX="210.0" layoutY="60.0" style="-fx-background-color: #000;" text="Use the scroll bar to follow the defendant's story" textFill="WHITE">
+        <Label layoutX="102.0" layoutY="57.0" style="-fx-background-color: #000;" text="the defendant's story and proceed when you're satisfied" textFill="WHITE">
           <font>
             <Font size="20.0" />
           </font>
         </Label>
-        <Slider fx:id="slidingBar" blockIncrement="1.0" layoutX="41.0" layoutY="516.0" majorTickUnit="1.0" max="15.0" minorTickCount="0" prefHeight="84.0" prefWidth="526.0" showTickMarks="true" snapToTicks="true" styleClass="glow-slider" />
-
+        
+        <!-- Speech Bubbles -->
         <StackPane fx:id="scene1" layoutX="488.0" layoutY="144.0" prefHeight="170.0" prefWidth="270.0" visible="false">
           <ImageView fitHeight="167.0" fitWidth="263.0" preserveRatio="true">
             <image>
@@ -130,11 +132,66 @@
           </Text>
           </AnchorPane>
         </StackPane>
+        <StackPane fx:id="scene7" layoutX="474.0" layoutY="130.0" prefHeight="170.0" prefWidth="270.0" visible="false">
+          <ImageView fitHeight="211.0" fitWidth="330.0" preserveRatio="true">
+            <image>
+              <Image url="@../images/Speech Balloon 2.png" />
+            </image>
+          </ImageView>
+          <AnchorPane prefWidth="330.0">
+            <Text layoutX="94.0" layoutY="64.0" text="system, please cross reference that all collected songs are ok to use" textAlignment="CENTER" wrappingWidth="155.0">
+              <font>
+                <Font size="17.0" />
+              </font>
+          </Text>
+          </AnchorPane>
+        </StackPane>
+        <StackPane fx:id="scene8" layoutX="105.0" layoutY="211.0" prefHeight="170.0" prefWidth="270.0" visible="false">
+          <ImageView fitHeight="167.0" fitWidth="263.0" preserveRatio="true">
+            <image>
+              <Image url="@../images/Speech Balloon 3.png" />
+            </image>
+          </ImageView>
+          <AnchorPane>
+            <Text layoutX="68.0" layoutY="63.0" text="error detected... anomalous files deleted" textAlignment="CENTER" wrappingWidth="117.6533882122913">
+              <font>
+                <Font size="17.0" />
+              </font>
+          </Text>
+          </AnchorPane>
+        </StackPane>
+        <StackPane fx:id="scene9" layoutX="124.0" layoutY="155.0" prefHeight="170.0" prefWidth="212.0" visible="false">
+               <children>
+             <ImageView fitHeight="158.0" fitWidth="190.0" preserveRatio="true">
+               <image>
+                 <Image url="@../images/cursingSpeechBubble.png" />
+               </image>
+             </ImageView>
+               </children>
+        </StackPane>
+        <StackPane fx:id="scene11" layoutX="527.0" layoutY="137.0" prefHeight="170.0" prefWidth="270.0" visible="false">
+          <ImageView fitHeight="167.0" fitWidth="263.0" preserveRatio="true">
+            <image>
+              <Image url="@../images/Speech Balloon 2.png" />
+            </image>
+          </ImageView>
+          <AnchorPane>
+            <Text layoutX="82.0" layoutY="72.0" text="okay! deleting from database.." textAlignment="CENTER" wrappingWidth="117.6533882122913">
+              <font>
+                <Font size="18.0" />
+              </font>
+          </Text>
+          </AnchorPane>
+        </StackPane>
 
+        <!-- Slide Bar and Proceed Button -->
+        <Slider fx:id="slidingBar" blockIncrement="1.0" layoutX="41.0" layoutY="516.0" majorTickUnit="1.0" max="15.0" minorTickCount="0" prefHeight="84.0" prefWidth="526.0" showTickMarks="true" snapToTicks="true" styleClass="glow-slider" />
+        <Button fx:id="proceedButton" layoutX="610.0" layoutY="537.0" mnemonicParsing="false" onAction="#onProceed" prefHeight="38.0" prefWidth="113.0" text="Proceed" visible="false" />
       </children>
     </AnchorPane>
-    
-    <VBox fx:id="flashbackMessage" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
+
+    <!-- Intro Pop-up -->
+    <VBox fx:id="memoryMessage" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
       <children>
         <Label prefHeight="88.0" prefWidth="165.0" style="-fx-text-fill: white; -fx-font-size: 36px;" text="Memory!">
           <font>
