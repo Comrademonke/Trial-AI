@@ -26,12 +26,27 @@
                   <ColorAdjust hue="-1.0" />
                </effect>
         </ImageView>
+            <ImageView fitHeight="105.0" fitWidth="276.0" layoutX="2.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/titleBackground.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="105.0" fitWidth="276.0" layoutX="558.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+               <image>
+                  <Image url="@../images/titleBackground.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="378.0" fitWidth="231.0" layoutX="274.0" layoutY="-200.0" pickOnBounds="true" rotate="90.0">
+               <image>
+                  <Image url="@../images/titleBackground.png" />
+               </image>
+            </ImageView>
         <Label fx:id="timer" layoutX="639.0" layoutY="23.0" prefHeight="63.0" prefWidth="155.0" text="2:00" textFill="WHITE">
           <font>
             <Font size="50.0" />
           </font></Label>
         <ProgressBar fx:id="progressBar" layoutX="-1.0" layoutY="104.0" prefHeight="20.0" prefWidth="790.0" progress="0.0" />
-        <Label layoutX="331.0" layoutY="23.0" style="-fx-background-color: #000;" text=" This is a flashback! " textFill="WHITE">
+        <Label alignment="CENTER" layoutX="331.0" layoutY="23.0" prefHeight="30.0" prefWidth="143.0" style="-fx-background-color: #000;" text="Flashback" textFill="WHITE">
           <font>
             <Font size="20.0" />
           </font>
