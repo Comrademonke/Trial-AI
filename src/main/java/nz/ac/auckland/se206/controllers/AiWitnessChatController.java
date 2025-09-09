@@ -162,21 +162,18 @@ public class AiWitnessChatController extends ChatControllerCentre {
 
     // Create and style the completion label
     completionLabel =
-        new Label(
-            "After investigation AI witness' testimony is based solely on rumours and is"
-                + " unreliable.");
+        new Label("The AI's actions were clearly unethical - using artists' work without consent.");
     completionLabel.setStyle(
-        "-fx-font-size: 24px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.8);"
-            + " -fx-padding: 15px; -fx-background-radius: 10px;");
+        "-fx-font-size: 30px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.8);"
+            + " -fx-padding: 20px; -fx-background-radius: 10px;");
     completionLabel.setWrapText(true);
-    completionLabel.setPrefWidth(400); // Adjusted to fit the anchor pane width
-    completionLabel.setPrefHeight(150); // Set a reasonable height
+    completionLabel.setPrefWidth(600);
     completionLabel.setAlignment(Pos.CENTER);
     completionLabel.setTextAlignment(TextAlignment.CENTER);
 
-    // Position within the dedicated anchor pane area (301, 164, 435x356)
-    completionLabel.setLayoutX(301 + 17); // Centered horizontally in the anchor pane
-    completionLabel.setLayoutY(164 + 103); // Centered vertically in the anchor pane
+    // Position in the center of the screen
+    completionLabel.setLayoutX(200);
+    completionLabel.setLayoutY(250);
     completionLabel.setVisible(false);
     ((AnchorPane) slider.getParent()).getChildren().add(completionLabel);
 
