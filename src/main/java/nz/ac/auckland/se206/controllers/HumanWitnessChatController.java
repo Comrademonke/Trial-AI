@@ -4,6 +4,7 @@ import java.io.File;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
@@ -51,6 +52,7 @@ public class HumanWitnessChatController extends ChatControllerCentre {
   @FXML private Polygon dialogueText10;
   @FXML private Label storyCompletionLabel;
   @FXML private ImageView backgroundImage;
+  @FXML private Button continueButton;
 
   @Override
   @FXML
@@ -192,6 +194,14 @@ public class HumanWitnessChatController extends ChatControllerCentre {
     } else if (value != 14) {
       dialogue10.setVisible(false);
       dialogueText10.setVisible(false);
+    }
+    // Button to leave the flashback
+    if (value == 15) {
+      continueButton.setVisible(true);
+      continueButton.setDisable(false);
+    } else if (value != 15) {
+      continueButton.setVisible(false);
+      continueButton.setDisable(true);
     }
   }
 }
