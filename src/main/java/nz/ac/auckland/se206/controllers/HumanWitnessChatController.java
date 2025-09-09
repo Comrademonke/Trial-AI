@@ -1,8 +1,10 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.App;
 
 /**
  * Controller class for the chat view. Handles user interactions and communication with the GPT
@@ -97,6 +100,7 @@ public class HumanWitnessChatController extends ChatControllerCentre {
     ColorAdjust colorAdjust = new ColorAdjust();
     colorAdjust.setHue((-1.0 + (value / 15.0) * 2));
     backgroundImage.setEffect(colorAdjust);
+    storyCompletionLabel.setEffect(colorAdjust);
   }
 
   private void showDialogue(int value) {
@@ -203,5 +207,11 @@ public class HumanWitnessChatController extends ChatControllerCentre {
       continueButton.setVisible(false);
       continueButton.setDisable(true);
     }
+  }
+
+  @FXML
+  private void OngoChat(ActionEvent event) throws ApiProxyException, IOException {
+    // SetRoot to the human witness chat room
+    App.setRoot("room");
   }
 }
