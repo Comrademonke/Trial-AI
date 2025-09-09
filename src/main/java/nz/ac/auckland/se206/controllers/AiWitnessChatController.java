@@ -1,7 +1,13 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
@@ -19,7 +25,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
+import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.ChatStorage;
 
 /**
  * Controller class for the AI Witness chat view. Handles user interactions and communication with
@@ -48,13 +56,53 @@ public class AiWitnessChatController extends ChatControllerCentre {
   @FXML private Button clearNoiseBtn;
   @FXML private ImageView rumourBin;
   private Label completionLabel;
+  private List<String> playerActions = new ArrayList<>();
+  private int bubblesInBin = 0;
+
+  /**
+   * Logs a player action for tracking their progress through the memory/puzzle.
+   *
+   * @param action The description of the action performed
+   */
+  private void logAction(String action) {
+    playerActions.add(action);
+    System.out.println("Player action: " + action); // For debugging
+
+    // Build context message for AI
+    StringBuilder contextMsg = new StringBuilder();
+    contextMsg.append("Context Update:\n");
+    contextMsg.append(
+        "- The player can interact with speech bubbles containing rumors about AI music"
+            + " generation\n");
+    contextMsg.append("- The player can drag these rumours into a bin to dispose of them\n");
+    contextMsg.append(
+        "- Each action represents the player's interaction with these rumors in your memory\n\n");
+    contextMsg.append("Recent player actions:\n");
+    for (String playerAction : playerActions) {
+      contextMsg.append("- ").append(playerAction).append("\n");
+    }
+
+    // Add context to chat storage
+    ChatMessage actionMsg = new ChatMessage("system", contextMsg.toString());
+    actionMsg.setSystemPrompt(true);
+    ChatStorage.addMessage("system", actionMsg);
+  }
 
   @Override
   @FXML
   public void initialize() {
     try {
       super.initialize();
-    } catch (ApiProxyException e) {
+
+      // Read the initial prompt from the file
+      Path promptPath = Paths.get("src/main/resources/prompts/aiWitness.txt");
+      String basePrompt = Files.readString(promptPath);
+
+      // Add initial system message from the file
+      ChatMessage contextMsg = new ChatMessage("system", basePrompt);
+      contextMsg.setSystemPrompt(true);
+      ChatStorage.addMessage("system", contextMsg);
+    } catch (ApiProxyException | IOException e) {
       e.printStackTrace();
     }
     flashbackMessage.setVisible(true);
@@ -221,6 +269,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
       showBubbleWithText(speechBubble12);
       clearNoiseBtn.setVisible(true);
       slider.setVisible(false);
+      logAction("Player has revealed all speech bubbles about AI music generation controversy");
     }
   }
 
@@ -262,12 +311,15 @@ public class AiWitnessChatController extends ChatControllerCentre {
           double stackCenterY = stackBounds.getMinY() + stackBounds.getHeight() / 2;
 
           if (Math.abs(stackCenterX - binCenterX) < collisionWidth / 2
-              && Math.abs(stackCenterY - binCenterY) < collisionHeight / 2) {
-            stack.setVisible(false); // Hide the whole stack (bubble + text)
+              && Math.abs(stackCenterY - binCenterY) < collisionHeight / 2
+              && stack.isVisible()) { // Only process if the stack is still visible
             Label label = speechBubbleLabels.get(bubble);
             if (label != null) {
+              logAction("Player disposed rumour: \"" + label.getText() + "\"");
               label.setVisible(false);
             }
+            stack.setVisible(false); // Hide the whole stack (bubble + text)
+            bubblesInBin++;
             checkAllBubblesHidden();
           }
         });
@@ -289,8 +341,12 @@ public class AiWitnessChatController extends ChatControllerCentre {
     }
 
     if (allHidden) {
-      // Simply show the completion message
+      // Show the completion message and log the completion
       completionLabel.setVisible(true);
+      logAction(
+          "Player completed rumour clearing activity by disposing all "
+              + bubblesInBin
+              + " speech bubbles");
     }
   }
 
@@ -299,6 +355,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
     // Show the instruction label
     instructionLabel.setVisible(true);
     rumourBin.setVisible(true);
+    logAction("Player started clearing rumours by activating the rumour bin");
 
     // Create a fade transition for the instruction
     javafx.animation.FadeTransition fadeOut =
