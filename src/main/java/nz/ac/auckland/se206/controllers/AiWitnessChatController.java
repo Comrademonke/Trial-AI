@@ -23,6 +23,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatMessage;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.AiWitnessStateManager;
 import nz.ac.auckland.se206.ChatStorage;
 
 /**
@@ -239,9 +240,59 @@ public class AiWitnessChatController extends ChatControllerCentre {
 
     flashbackMessage.setVisible(true);
     setupSpeechBubbleTexts();
+    
+    // Restore state from manager
+    AiWitnessStateManager state = AiWitnessStateManager.getInstance();
+
+    // Start with all bubbles hidden
     hideAllSpeechBubbles();
     clearNoiseBtn.setVisible(false);
     rumourBin.setVisible(false);
+
+    // Restore slider value and bubbles
+    if (state.hasShownAllBubbles()) {
+      slider.setValue(11);
+      slider.setVisible(false);
+      
+      // Show all bubbles first
+      showSpeechBubble(11);
+      
+      // If clear noise was clicked, show bin and make bubbles draggable
+      if (state.hasClickedClearNoise()) {
+        rumourBin.setVisible(true);
+        // Make all non-disposed bubbles draggable
+        for (ImageView bubble : new ImageView[] {
+          speechBubble1, speechBubble2, speechBubble3, speechBubble4,
+          speechBubble5, speechBubble6, speechBubble7, speechBubble8,
+          speechBubble9, speechBubble10, speechBubble11, speechBubble12
+        }) {
+          if (bubble.getParent() instanceof StackPane && bubble.isVisible()) {
+            makeDraggableWithBinDetection((StackPane) bubble.getParent(), bubble);
+          }
+        }
+      } else {
+        // If not clicked clear noise yet, show the button
+        clearNoiseBtn.setVisible(true);
+      }
+    } else {
+      double sliderValue = state.getSliderValue();
+      slider.setValue(sliderValue);
+      // Show bubbles up to the saved slider value
+      showSpeechBubble((int)sliderValue);
+    }
+
+    // Restore disposed bubbles
+    for (int bubbleNumber : state.getDisposedBubbles()) {
+      ImageView bubble = getBubbleByNumber(bubbleNumber);
+      if (bubble != null && bubble.getParent() instanceof StackPane) {
+        StackPane stack = (StackPane) bubble.getParent();
+        stack.setVisible(false);
+        Label label = speechBubbleLabels.get(bubble);
+        if (label != null) {
+          label.setVisible(false);
+        }
+      }
+    }
 
     // Create and style the instruction label
     instructionLabel = new Label("Drag the rumours into the bin");
@@ -394,11 +445,14 @@ public class AiWitnessChatController extends ChatControllerCentre {
     }
     if (value >= 11) {
       showBubbleWithText(speechBubble12);
-      clearNoiseBtn.setVisible(true);
+      // Only show clear button if it hasn't been clicked yet
+      clearNoiseBtn.setVisible(!AiWitnessStateManager.getInstance().hasClickedClearNoise());
       slider.setVisible(false);
       logAction("Revealed all rumors");
       addAiComment("revealed all");
+      AiWitnessStateManager.getInstance().setShownAllBubbles(true);
     }
+    AiWitnessStateManager.getInstance().setSliderValue(value);
   }
 
   private void showBubbleWithText(ImageView bubble) {
@@ -406,6 +460,53 @@ public class AiWitnessChatController extends ChatControllerCentre {
     Label label = speechBubbleLabels.get(bubble);
     if (label != null) {
       label.setVisible(true);
+    }
+  }
+
+  private int getBubbleNumber(ImageView bubble) {
+    if (bubble == speechBubble1) return 1;
+    if (bubble == speechBubble2) return 2;
+    if (bubble == speechBubble3) return 3;
+    if (bubble == speechBubble4) return 4;
+    if (bubble == speechBubble5) return 5;
+    if (bubble == speechBubble6) return 6;
+    if (bubble == speechBubble7) return 7;
+    if (bubble == speechBubble8) return 8;
+    if (bubble == speechBubble9) return 9;
+    if (bubble == speechBubble10) return 10;
+    if (bubble == speechBubble11) return 11;
+    if (bubble == speechBubble12) return 12;
+    return -1;
+  }
+
+  private ImageView getBubbleByNumber(int number) {
+    switch (number) {
+      case 1:
+        return speechBubble1;
+      case 2:
+        return speechBubble2;
+      case 3:
+        return speechBubble3;
+      case 4:
+        return speechBubble4;
+      case 5:
+        return speechBubble5;
+      case 6:
+        return speechBubble6;
+      case 7:
+        return speechBubble7;
+      case 8:
+        return speechBubble8;
+      case 9:
+        return speechBubble9;
+      case 10:
+        return speechBubble10;
+      case 11:
+        return speechBubble11;
+      case 12:
+        return speechBubble12;
+      default:
+        return null;
     }
   }
 
@@ -459,6 +560,12 @@ public class AiWitnessChatController extends ChatControllerCentre {
               // Log the action and pass the bubble's text
               logAction("Disposed: " + bubbleText);
               addAiComment("disposed: " + bubbleText);
+
+              // Save state
+              int bubbleNumber = getBubbleNumber(bubble);
+              if (bubbleNumber != -1) {
+                AiWitnessStateManager.getInstance().addDisposedBubble(bubbleNumber);
+              }
             }
           }
           isDragging[0] = false;
@@ -474,6 +581,9 @@ public class AiWitnessChatController extends ChatControllerCentre {
     logAction("Clear Noise button clicked");
     addAiComment("cleared");
 
+    // Save state
+    AiWitnessStateManager.getInstance().setClearNoiseClicked(true);
+
     // Create a fade transition for the instruction
     javafx.animation.FadeTransition fadeOut =
         new javafx.animation.FadeTransition(Duration.seconds(3), instructionLabel);
@@ -483,14 +593,14 @@ public class AiWitnessChatController extends ChatControllerCentre {
     fadeOut.setOnFinished(e -> instructionLabel.setVisible(false));
     fadeOut.play();
 
-    // Make the StackPanes containing bubbles and text draggable with bin detection
+    // Make only visible bubbles draggable
     for (ImageView bubble :
         new ImageView[] {
           speechBubble1, speechBubble2, speechBubble3, speechBubble4,
           speechBubble5, speechBubble6, speechBubble7, speechBubble8,
           speechBubble9, speechBubble10, speechBubble11, speechBubble12
         }) {
-      if (bubble.getParent() instanceof StackPane) {
+      if (bubble.getParent() instanceof StackPane && bubble.isVisible()) {
         makeDraggableWithBinDetection((StackPane) bubble.getParent(), bubble);
       }
     }
