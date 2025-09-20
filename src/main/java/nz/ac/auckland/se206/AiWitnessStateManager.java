@@ -17,6 +17,7 @@ public class AiWitnessStateManager {
   private boolean hasShownAllBubbles = false;
   private int bubblesInBin = 0;
   private int currentFlashbackState = 1;
+  private boolean isEndLabelVisible = false;
 
   private AiWitnessStateManager() {
     // Private constructor for singleton
@@ -136,6 +137,24 @@ public class AiWitnessStateManager {
     this.currentFlashbackState = state;
   }
 
+  /**
+   * Gets whether the end label is visible.
+   *
+   * @return true if the end label is visible
+   */
+  public boolean isEndLabelVisible() {
+    return isEndLabelVisible;
+  }
+
+  /**
+   * Sets whether the end label is visible.
+   *
+   * @param visible whether the end label should be visible
+   */
+  public void setEndLabelVisible(boolean visible) {
+    this.isEndLabelVisible = visible;
+  }
+
   /** Resets the state to initial values. Call this when starting a new game. */
   public void resetState() {
     sliderValue = 0;
@@ -144,5 +163,6 @@ public class AiWitnessStateManager {
     hasShownAllBubbles = false;
     bubblesInBin = 0;
     currentFlashbackState = 1;
+    isEndLabelVisible = false;
   }
 }

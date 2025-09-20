@@ -138,7 +138,9 @@ public class AiWitnessChatController extends ChatControllerCentre {
               fadeIn.setToValue(1.0);
 
               // Show the conclusion message
+              // Show the completion label and save its state
               completionLabel.setVisible(true);
+              AiWitnessStateManager.getInstance().setEndLabelVisible(true);
               fadeIn.play();
 
               // Add context to chat storage
@@ -318,7 +320,10 @@ public class AiWitnessChatController extends ChatControllerCentre {
     // Position in the center of the screen
     completionLabel.setLayoutX(200);
     completionLabel.setLayoutY(250);
-    completionLabel.setVisible(false);
+
+    // Restore the visibility state of the completion label
+    completionLabel.setVisible(state.isEndLabelVisible());
+
     ((AnchorPane) slider.getParent()).getChildren().add(completionLabel);
 
     slider
