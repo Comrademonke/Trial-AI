@@ -6,6 +6,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -41,6 +42,8 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   @FXML private VBox flashbackMessage;
   @FXML private Label songLabel;
   @FXML private ImageView musicCover;
+  @FXML private Button playPreviousSongButton;
+  @FXML private Button playNextSongButton;
 
   @Override
   @FXML
@@ -128,6 +131,26 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   @FXML
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
     App.setRoot("room");
+  }
+
+  @FXML
+  private void onlightUpPreviousButton() {
+    playPreviousSongButton.setOpacity(1);
+  }
+
+  @FXML
+  private void onlightDownPreviousButton() {
+    playPreviousSongButton.setOpacity(0.7);
+  }
+
+  @FXML
+  private void onlightUpNextButton() {
+    playNextSongButton.setOpacity(1);
+  }
+
+  @FXML
+  private void onlightDownNextButton() {
+    playNextSongButton.setOpacity(0.7);
   }
 
   private void setImageCover(int index) {
