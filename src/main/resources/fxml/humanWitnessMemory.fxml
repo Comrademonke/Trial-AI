@@ -43,7 +43,7 @@
                   <Image url="@../images/aICasetteTape.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" layoutX="427.0" layoutY="398.0" prefHeight="50.0" prefWidth="124.0" style="-fx-background-color: white;" text="     Choose Song to&#10;⬇Insert beats below⬇" />
+            <Label alignment="CENTER" layoutX="427.0" layoutY="398.0" prefHeight="50.0" prefWidth="124.0" style="-fx-background-color: white;" text="     Choose Song to&#10;⬇Insert beats below⬇" textFill="RED" />
         <TextField fx:id="txtInput" layoutX="12.0" layoutY="545.0" opacity="0.83" prefHeight="30.0" prefWidth="308.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" />
         <Button fx:id="btnSend" layoutX="326.0" layoutY="545.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="14.0" prefWidth="56.0" text="Send">
                <font>
@@ -80,7 +80,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <ImageView fitHeight="126.0" fitWidth="127.0" layoutX="386.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="musicCover" fitHeight="126.0" fitWidth="127.0" layoutX="386.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/carRadio.jpg" />
                </image>

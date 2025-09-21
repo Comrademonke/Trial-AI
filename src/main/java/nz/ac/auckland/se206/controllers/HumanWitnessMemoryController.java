@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -25,12 +26,21 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   private String[] songs = {
     "Song 1", "Song 2", "Song 3", "Song 4", "Song 5", "Song 6", "Song 7", "Song 8"
   };
+  Image image1 = new Image(getClass().getResourceAsStream("/images/carRadio.jpg"));
+  Image image2 = new Image(getClass().getResourceAsStream("/images/cityLights.jpg"));
+  Image image3 = new Image(getClass().getResourceAsStream("/images/catSleeping.jpg"));
+  Image image4 = new Image(getClass().getResourceAsStream("/images/coffeeMug.jpg"));
+  Image image5 = new Image(getClass().getResourceAsStream("/images/concert.jpg"));
+  Image image6 = new Image(getClass().getResourceAsStream("/images/deers.jpg"));
+  Image image7 = new Image(getClass().getResourceAsStream("/images/ocean.jpg"));
+  Image image8 = new Image(getClass().getResourceAsStream("/images/eggs.jpg"));
 
   @FXML private TextArea txtaChat;
   @FXML private Label timer;
   @FXML private ImageView cassetteTape;
   @FXML private VBox flashbackMessage;
   @FXML private Label songLabel;
+  @FXML private ImageView musicCover;
 
   @Override
   @FXML
@@ -83,6 +93,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
         e -> {
           // Update label
           currentSongIndex = (currentSongIndex + 1) % songs.length;
+          setImageCover(currentSongIndex);
           songLabel.setText(songs[currentSongIndex]);
           fadeIn.play();
         });
@@ -106,6 +117,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
         e -> {
           // Update label
           currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+          setImageCover(currentSongIndex);
           songLabel.setText(songs[currentSongIndex]);
           fadeIn.play();
         });
@@ -116,5 +128,26 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   @FXML
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
     App.setRoot("room");
+  }
+
+  private void setImageCover(int index) {
+    // Switches image cover to match song name
+    if (index == 0) {
+      musicCover.setImage(image1);
+    } else if (index == 1) {
+      musicCover.setImage(image2);
+    } else if (index == 2) {
+      musicCover.setImage(image3);
+    } else if (index == 3) {
+      musicCover.setImage(image4);
+    } else if (index == 4) {
+      musicCover.setImage(image5);
+    } else if (index == 5) {
+      musicCover.setImage(image6);
+    } else if (index == 6) {
+      musicCover.setImage(image7);
+    } else if (index == 7) {
+      musicCover.setImage(image8);
+    }
   }
 }
