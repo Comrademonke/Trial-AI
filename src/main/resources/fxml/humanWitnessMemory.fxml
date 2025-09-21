@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.HumanWitnessMemoryController">
+  <children>
+    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0">
+      <children>
+        <ImageView fitHeight="600.0" fitWidth="806.0" layoutX="-5.0" layoutY="1.0" opacity="0.9" preserveRatio="true">
+          <image>
+            <Image url="@../images/musicStudioBackground.jpg" />
+          </image>
+        </ImageView>
+            <ImageView fitHeight="105.0" fitWidth="276.0" layoutX="-3.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/titleBackground.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="105.0" fitWidth="276.0" layoutX="563.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+               <image>
+                  <Image url="@../images/titleBackground.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="378.0" fitWidth="231.0" layoutX="284.0" layoutY="-190.0" pickOnBounds="true" rotate="90.0">
+               <image>
+                  <Image url="@../images/titleBackground.png" />
+               </image>
+            </ImageView>
+        <TextArea fx:id="txtaChat" editable="false" layoutX="11.0" layoutY="137.0" opacity="0.83" prefHeight="392.0" prefWidth="367.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" wrapText="true" />
+            <ImageView fitHeight="240.0" fitWidth="332.0" layoutX="326.0" layoutY="361.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/aICasetteTape.png" />
+               </image>
+            </ImageView>
+        <ImageView fx:id="cassetteTape" fitHeight="142.0" fitWidth="231.0" layoutX="371.0" layoutY="195.0" preserveRatio="true">
+          <image>
+            <Image url="@../images/cassetteTape.png" />
+          </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+        </ImageView>
+        <TextField fx:id="txtInput" layoutX="12.0" layoutY="545.0" opacity="0.83" prefHeight="30.0" prefWidth="308.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" />
+        <Button fx:id="btnSend" layoutX="326.0" layoutY="545.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="14.0" prefWidth="56.0" text="Send">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+        <Button layoutX="25.0" layoutY="29.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="52.0" prefWidth="130.0" text="Go Back" />
+          <Label fx:id="timer" layoutX="639.0" layoutY="23.0" prefHeight="63.0" prefWidth="155.0" text="2:00" textFill="WHITE">
+            <font>
+              <Font size="50.0" />
+            </font></Label>
+        <ProgressBar fx:id="progressBar" layoutX="-1.0" layoutY="104.0" prefHeight="20.0" prefWidth="790.0" progress="0.0" />
+        <Label alignment="CENTER" layoutX="228.0" layoutY="18.0" prefHeight="66.0" prefWidth="367.0" style="-fx-background-color: #000;" text="Human Witness Memory" textFill="WHITE">
+          <font>
+            <Font size="30.0" />
+          </font>
+        </Label>
+      </children>
+    </AnchorPane>
+    
+    <VBox fx:id="flashbackMessage" alignment="CENTER" style="-fx-background-color: rgba(0, 0, 0, 0.5);" visible="false">
+      <children>
+        <Label prefHeight="88.0" prefWidth="165.0" style="-fx-text-fill: white; -fx-font-size: 36px;" text="Flashback!">
+          <font>
+            <Font size="14.0" />
+          </font>
+        </Label>
+      </children>
+    </VBox>
+  </children>
+</StackPane>
