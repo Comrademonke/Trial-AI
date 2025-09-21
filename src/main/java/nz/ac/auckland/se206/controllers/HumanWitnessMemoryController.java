@@ -27,14 +27,21 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   private String[] songs = {
     "Song 1", "Song 2", "Song 3", "Song 4", "Song 5", "Song 6", "Song 7", "Song 8"
   };
-  Image image1 = new Image(getClass().getResourceAsStream("/images/carRadio.jpg"));
-  Image image2 = new Image(getClass().getResourceAsStream("/images/cityLights.jpg"));
-  Image image3 = new Image(getClass().getResourceAsStream("/images/catSleeping.jpg"));
-  Image image4 = new Image(getClass().getResourceAsStream("/images/coffeeMug.jpg"));
-  Image image5 = new Image(getClass().getResourceAsStream("/images/concert.jpg"));
-  Image image6 = new Image(getClass().getResourceAsStream("/images/deers.jpg"));
-  Image image7 = new Image(getClass().getResourceAsStream("/images/ocean.jpg"));
-  Image image8 = new Image(getClass().getResourceAsStream("/images/eggs.jpg"));
+  private Image image1 = new Image(getClass().getResourceAsStream("/images/carRadio.jpg"));
+  private Image image2 = new Image(getClass().getResourceAsStream("/images/cityLights.jpg"));
+  private Image image3 = new Image(getClass().getResourceAsStream("/images/catSleeping.jpg"));
+  private Image image4 = new Image(getClass().getResourceAsStream("/images/coffeeMug.jpg"));
+  private Image image5 = new Image(getClass().getResourceAsStream("/images/concert.jpg"));
+  private Image image6 = new Image(getClass().getResourceAsStream("/images/deers.jpg"));
+  private Image image7 = new Image(getClass().getResourceAsStream("/images/ocean.jpg"));
+  private Image image8 = new Image(getClass().getResourceAsStream("/images/eggs.jpg"));
+
+  private boolean isLocked = false;
+  private double initialAreaX = 589;
+  private double initialAreaY = 286;
+  private double targetAreaX = 374;
+  private double targetAreaY = 454;
+  private double targetAreaSize = 200;
 
   @FXML private TextArea txtaChat;
   @FXML private Label timer;
@@ -44,6 +51,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   @FXML private ImageView musicCover;
   @FXML private Button playPreviousSongButton;
   @FXML private Button playNextSongButton;
+  @FXML private Label robotTextDisplay;
 
   @Override
   @FXML
@@ -54,12 +62,17 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
       e.printStackTrace();
     }
 
+    robotTextDisplay.setText("     Choose Song to\r\n" + "⬇Insert beats below⬇");
+
     // Disable and turn visibility off the cassette tape
     cassetteTape.setVisible(false);
     cassetteTape.setDisable(true);
 
     // Set initial song
     songLabel.setText(songs[currentSongIndex]);
+
+    // Set initial cover image
+    musicCover.setImage(image1);
 
     // Display flashback message at the beginning
     flashbackMessage.setVisible(true);
@@ -71,6 +84,59 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
         });
 
     DraggableMaker.makeDraggable(cassetteTape);
+
+    // Set up cassette tape settings
+    setUpCassetteTape();
+
+    cassetteTape.setOnMouseReleased(
+        event -> {
+          if (!isLocked) {
+            checkIfCassetteInTargetArea();
+          }
+        });
+  }
+
+  private void setUpCassetteTape() {
+    // Enable dragging
+    cassetteTape.setDisable(false);
+
+    // Resets cassetteTape positions
+    cassetteTape.setLayoutX(initialAreaX);
+    cassetteTape.setLayoutY(initialAreaY);
+
+    cassetteTape.setOpacity(1);
+  }
+
+  private void checkIfCassetteInTargetArea() {
+    // Get cassette tape position
+    double cassetteCenterX =
+        cassetteTape.getLayoutX() + cassetteTape.getBoundsInLocal().getWidth() / 2;
+    double cassetteCenterY =
+        cassetteTape.getLayoutY() + cassetteTape.getBoundsInLocal().getHeight() / 2;
+
+    // Check if cassette is within target area
+    if (cassetteCenterX >= targetAreaX
+        && cassetteCenterX <= targetAreaX + targetAreaSize
+        && cassetteCenterY >= targetAreaY
+        && cassetteCenterY <= targetAreaY + targetAreaSize) {
+
+      lockCassetteInTarget();
+    }
+  }
+
+  private void lockCassetteInTarget() {
+    isLocked = true;
+
+    // Disable dragging
+    cassetteTape.setDisable(true);
+
+    // Snap to exact target position
+    cassetteTape.setLayoutX(targetAreaX);
+    cassetteTape.setLayoutY(targetAreaY);
+
+    cassetteTape.setOpacity(0.8);
+
+    robotTextDisplay.setText("Generating beats...");
   }
 
   @FXML

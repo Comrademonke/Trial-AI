@@ -46,7 +46,7 @@
                   <Image url="@../images/aICasetteTape.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" layoutX="427.0" layoutY="398.0" prefHeight="50.0" prefWidth="124.0" style="-fx-background-color: white;" text="     Choose Song to&#10;⬇Insert beats below⬇" textFill="RED" />
+            <Label fx:id="robotTextDisplay" alignment="CENTER" layoutX="427.0" layoutY="398.0" prefHeight="50.0" prefWidth="124.0" style="-fx-background-color: white;" text="     Choose Song to&#10;⬇Insert beats below⬇" textFill="RED" />
         <TextField fx:id="txtInput" layoutX="12.0" layoutY="545.0" opacity="0.83" prefHeight="30.0" prefWidth="302.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" />
         <Button fx:id="btnSend" layoutX="321.0" layoutY="545.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="30.0" prefWidth="51.0" text="Send">
                <font>
@@ -110,7 +110,7 @@
                   </InnerShadow>
                </effect>
             </ImageView>
-        <ImageView fx:id="cassetteTape" disable="true" fitHeight="142.0" fitWidth="231.0" layoutX="577.0" layoutY="289.0" preserveRatio="true">
+        <ImageView fx:id="cassetteTape" disable="true" fitHeight="142.0" fitWidth="231.0" layoutX="589.0" layoutY="286.0" preserveRatio="true">
           <image>
             <Image url="@../images/cassetteTape.png" />
           </image>
