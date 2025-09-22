@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import javafx.animation.AnimationTimer;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -40,6 +41,8 @@ public class DefendantChatController extends ChatControllerCentre {
   @FXML private VBox flashbackMessage;
   private MediaPlayer mediaPlayer;
   private List<AnchorPane> discs;
+  private AnimationTimer gameLoop;
+  private int discIndex = 0;
 
   @Override
   @FXML
@@ -66,10 +69,63 @@ public class DefendantChatController extends ChatControllerCentre {
     discs = Arrays.asList(disc1, disc2, disc3, disc4, disc5);
   }
 
+  private void dropDisc(AnchorPane disc) {
+    double minX = 350;
+    double maxX = 650;
+    double x = minX + Math.random() * (maxX - minX);
+
+    disc.setLayoutY(10);
+    disc.setLayoutX(x);
+    disc.setVisible(true);
+  }
+
+  private void nextDisc() {
+    discIndex++;
+    if (discIndex < discs.size()) {
+      dropDisc(discs.get(discIndex));
+    } else {
+      basket.setVisible(false);
+      System.out.println("FINISHED");
+      gameLoop.stop();
+      return;
+    }
+  }
+
+  private void startGame() {
+    gameLoop =
+        new AnimationTimer() {
+          @Override
+          public void handle(long now) {
+            AnchorPane disc = discs.get(discIndex);
+
+            if (disc.isVisible()) {
+              disc.setLayoutY(disc.getLayoutY() + 2);
+
+              if (disc.getBoundsInParent().intersects(basket.getBoundsInParent())) {
+                // Disc caught
+                disc.setVisible(false);
+                nextDisc();
+              }
+
+              if (disc.getLayoutY() > 600) {
+                // Disc missed
+                disc.setVisible(false);
+                nextDisc();
+              }
+            }
+          }
+        };
+    gameLoop.start();
+  }
+
   @FXML
   private void onGameStart(ActionEvent event) {
     basket.setVisible(true);
     gameButton.setVisible(false);
+
+    startGame();
+    discIndex = 0;
+    dropDisc(discs.get(discIndex));
   }
 
   @FXML
