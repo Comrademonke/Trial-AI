@@ -104,7 +104,8 @@ public abstract class ChatControllerCentre {
               .setN(1)
               .setTemperature(0.1) // Lower temperature for more focused responses
               .setTopP(0.2) // More restrictive sampling
-              .setModel(Model.GPT_4_1_NANO); // Most efficient GPT-4 model
+              .setModel(Model.GPT_4_1_MINI)
+              .setMaxTokens(1);
 
       Task<Void> task =
           new Task<>() {

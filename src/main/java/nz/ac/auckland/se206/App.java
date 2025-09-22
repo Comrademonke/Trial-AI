@@ -22,7 +22,7 @@ public class App extends Application {
   private static Scene scene;
   private static final Map<String, String> fxmlMap =
       Map.of(
-          "AI Defendant", "/fxml/defendant.fxml",
+          "AI Defendant", "/fxml/defendantMemory.fxml",
           "AI Witness", "/fxml/aiWitness.fxml",
           "Human Witness", "/fxml/humanWitness.fxml");
 
@@ -78,9 +78,9 @@ public class App extends Application {
    * @throws IOException if the FXML file is not found
    */
   public static void openChat(MouseEvent event, String profession) throws IOException {
+    // First time talking
     if (!professionsOpened.contains(profession)) {
       professionsOpened.add(profession);
-
       if (profession.equals("AI Witness")) {
         // First click - show flashback
         FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/AIWitnessFlashback.fxml"));
@@ -89,18 +89,27 @@ public class App extends Application {
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-        return;
-      }
+      } else if (profession.equals("AI Defendant")) {
+        professionsOpened.add(profession);
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxmlMap.get(profession)));
+        Parent root = loader.load();
 
-      // For other professions, load their normal scenes
-      FXMLLoader loader = new FXMLLoader(App.class.getResource(fxmlMap.get(profession)));
-      Parent root = loader.load();
-      ChatControllerCentre chatController = loader.getController();
-      chatController.initialiseChatGpt(flashBackTxtMap.get(profession), profession);
-      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-      scene = new Scene(root);
-      stage.setScene(scene);
-      stage.show();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+      } else {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxmlMap.get(profession)));
+        Parent root = loader.load();
+
+        ChatControllerCentre chatController = loader.getController();
+        chatController.initialiseChatGpt(flashBackTxtMap.get(profession), profession);
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+      } 
     } else {
       // Second click for AI Witness - show memory scene
       if (profession.equals("AI Witness")) {
@@ -108,6 +117,11 @@ public class App extends Application {
         Parent root = loader.load();
         ChatControllerCentre chatController = loader.getController();
         chatController.initialiseChatGpt(trialTxtMap.get(profession), profession);
+        
+      } else if (profession.equals("AI Defendant")) {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/defendant.fxml"));
+        Parent root = loader.load();
+        
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -129,6 +143,11 @@ public class App extends Application {
   }
 
   public static void openFinalPage() throws IOException {
+    // Uncomment this to force all professions to be opened before accessing final page
+    // if (professionsOpened.size() != 3) {
+    //   System.out.println("Not all professions have been opened yet.");
+    //   return;
+    // }
     Parent root = loadFxml("finalPage");
     scene = new Scene(root);
     primaryStage.setScene(scene);
