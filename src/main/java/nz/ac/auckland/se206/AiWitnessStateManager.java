@@ -1,165 +1,155 @@
 package nz.ac.auckland.se206;
-
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
+import java.util.Map;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import nz.ac.auckland.se206.controllers.ChatControllerCentre;
+import nz.ac.auckland.se206.controllers.RoomController;
 /**
- * Manages the state of the AI Witness scene. This singleton class helps maintain the UI state when
- * navigating away and back to the AI Witness.
+ * This is the entry point of the JavaFX application. This class initializes and runs the JavaFX
+ * application.
  */
-public class AiWitnessStateManager {
-  private static AiWitnessStateManager instance;
-
-  // Scene state
-  private double sliderValue = 0;
-  private final List<Integer> disposedBubbles = new ArrayList<>();
-  private boolean hasClickedClearNoise = false;
-  private boolean hasShownAllBubbles = false;
-  private int currentFlashbackState = 1;
-  private boolean isEndLabelVisible = false;
-
-  private AiWitnessStateManager() {
-    // Private constructor for singleton
-  }
-
+public class App extends Application {
+  private static Scene scene;
+  private static final Map<String, String> fxmlMap =
+      Map.of(
+          "AI Defendant", "/fxml/defendantMemory.fxml",
+          "AI Witness", "/fxml/aiWitness.fxml",
+          "Human Witness", "/fxml/humanWitness.fxml");
+  private static final Map<String, String> trialTxtMap =
+      Map.of(
+          "AI Defendant", "defendant.txt",
+          "AI Witness", "aiWitness.txt",
+          "Human Witness", "humanWitness.txt");
+  private static final Map<String, String> flashBackTxtMap =
+      Map.of(
+          "AI Defendant", "defendantFlashback.txt",
+          "AI Witness", "aiWitnessFlashback.txt",
+          "Human Witness", "humanWitnessFlashback.txt");
+  private static ArrayList<String> professionsOpened = new ArrayList<>();
+  private static Stage primaryStage;
   /**
-   * Gets the singleton instance of the state manager.
+   * The main method that launches the JavaFX application.
    *
-   * @return the singleton instance
+   * @param args the command line arguments
    */
-  public static AiWitnessStateManager getInstance() {
-    if (instance == null) {
-      instance = new AiWitnessStateManager();
+  public static void main(final String[] args) {
+    launch();
+  }
+  /**
+   * Sets the root of the scene to the specified FXML file.
+   *
+   * @param fxml the name of the FXML file (without extension)
+   * @throws IOException if the FXML file is not found
+   */
+  public static void setRoot(String fxml) throws IOException {
+    scene.setRoot(loadFxml(fxml));
+  }
+  /**
+   * Loads the FXML file and returns the associated node. The method expects that the file is
+   * located in "src/main/resources/fxml".
+   *
+   * @param fxml the name of the FXML file (without extension)
+   * @return the root node of the FXML file
+   * @throws IOException if the FXML file is not found
+   */
+  private static Parent loadFxml(final String fxml) throws IOException {
+    return new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml")).load();
+  }
+  /**
+   * Opens a flashback or chat view depending on now many times the profession has been opened.
+   *
+   * @param event the mouse event that triggered the method
+   * @param profession the profession to set in the chat controller
+   * @throws IOException if the FXML file is not found
+   */
+  public static void openChat(MouseEvent event, String profession) throws IOException {
+    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+    // First time talking
+    if (!professionsOpened.contains(profession)) {
+      professionsOpened.add(profession); // Add the profession immediately to track that it's been clicked
+      if (profession.equals("AI Witness")) {
+        // First click - show flashback
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/AIWitnessFlashback.fxml"));
+        Parent root = loader.load();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+      } else if (profession.equals("AI Defendant")) {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/defendant.fxml"));
+        Parent root = loader.load();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+      } else {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxmlMap.get(profession)));
+        Parent root = loader.load();
+        ChatControllerCentre chatController = loader.getController();
+        chatController.initialiseChatGpt(flashBackTxtMap.get(profession), profession);
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+      }
+    } else {
+      // Second time talking - always load main scene
+      FXMLLoader loader;
+      Parent root;
+      if (profession.equals("AI Witness")) {
+        loader = new FXMLLoader(App.class.getResource(fxmlMap.get(profession)));
+        root = loader.load();
+        ChatControllerCentre chatController = loader.getController();
+        chatController.initialiseChatGpt(trialTxtMap.get(profession), profession);
+      } else if (profession.equals("AI Defendant")) {
+        // Return to room with defendant flashback
+        loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
+        root = loader.load();
+        RoomController controller = loader.getController();
+        controller.initialiseChatGpt(trialTxtMap.get(profession), profession);
+        controller.showOverlay();
+      } else {
+        // Return to room for other professions
+        loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
+        root = loader.load();
+        RoomController controller = loader.getController();
+        controller.initialiseChatGpt(trialTxtMap.get(profession), profession);
+        controller.showOverlay();
+      }
+      scene = new Scene(root);
+      stage.setScene(scene);
+      stage.show();
     }
-    return instance;
   }
-
+  public static void openFinalPage() throws IOException {
+    // Uncomment this to force all professions to be opened before accessing final page
+    // if (professionsOpened.size() != 3) {
+    //   System.out.println("Not all professions have been opened yet.");
+    //   return;
+    // }
+    Parent root = loadFxml("finalPage");
+    scene = new Scene(root);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
   /**
-   * Gets the current value of the slider.
+   * This method is invoked when the application starts. It loads and shows the "room" scene.
    *
-   * @return the slider value
+   * @param stage the primary stage of the application
+   * @throws IOException if the "src/main/resources/fxml/room.fxml" file is not found
    */
-  public double getSliderValue() {
-    return sliderValue;
-  }
-
-  /**
-   * Sets the value of the slider.
-   *
-   * @param value the new slider value
-   */
-  public void setSliderValue(double value) {
-    this.sliderValue = value;
-  }
-
-  /**
-   * Gets the list of bubble numbers that have been disposed.
-   *
-   * @return list of disposed bubble numbers
-   */
-  public List<Integer> getDisposedBubbles() {
-    return disposedBubbles;
-  }
-
-  /**
-   * Adds a bubble to the list of disposed bubbles.
-   *
-   * @param bubbleNumber the number of the bubble that was disposed
-   */
-  public void addDisposedBubble(int bubbleNumber) {
-    if (!disposedBubbles.contains(bubbleNumber)) {
-      disposedBubbles.add(bubbleNumber);
-    }
-  }
-
-  /**
-   * Checks if the clear noise button has been clicked.
-   *
-   * @return true if the button has been clicked
-   */
-  public boolean hasClickedClearNoise() {
-    return hasClickedClearNoise;
-  }
-
-  /**
-   * Sets whether the clear noise button has been clicked.
-   *
-   * @param clicked whether the button has been clicked
-   */
-  public void setClearNoiseClicked(boolean clicked) {
-    this.hasClickedClearNoise = clicked;
-  }
-
-  /**
-   * Checks if all bubbles have been shown.
-   *
-   * @return true if all bubbles have been shown
-   */
-  public boolean hasShownAllBubbles() {
-    return hasShownAllBubbles;
-  }
-
-  /**
-   * Sets whether all bubbles have been shown.
-   *
-   * @param shown whether all bubbles have been shown
-   */
-  public void setShownAllBubbles(boolean shown) {
-    this.hasShownAllBubbles = shown;
-  }
-
-  /**
-   * Gets the number of bubbles in the bin.
-   *
-   * @return number of bubbles in the bin
-   */
-  public int getBubblesInBin() {
-    return disposedBubbles.size();
-  }
-
-  /**
-   * Gets the current flashback state.
-   *
-   * @return the current flashback state (1: first image, 2: second image, 3: third image)
-   */
-  public int getFlashbackState() {
-    return currentFlashbackState;
-  }
-
-  /**
-   * Sets the current flashback state.
-   *
-   * @param state the new flashback state
-   */
-  public void setFlashbackState(int state) {
-    this.currentFlashbackState = state;
-  }
-
-  /**
-   * Gets whether the end label is visible.
-   *
-   * @return true if the end label is visible
-   */
-  public boolean isEndLabelVisible() {
-    return isEndLabelVisible;
-  }
-
-  /**
-   * Sets whether the end label is visible.
-   *
-   * @param visible whether the end label should be visible
-   */
-  public void setEndLabelVisible(boolean visible) {
-    this.isEndLabelVisible = visible;
-  }
-
-  /** Resets the state to initial values. Call this when starting a new game. */
-  public void resetState() {
-    sliderValue = 0;
-    disposedBubbles.clear();
-    hasClickedClearNoise = false;
-    hasShownAllBubbles = false;
-    currentFlashbackState = 1;
-    isEndLabelVisible = false;
+  @Override
+  public void start(final Stage stage) throws IOException {
+    primaryStage = stage;
+    Parent root = loadFxml("room");
+    scene = new Scene(root);
+    stage.setScene(scene);
+    stage.show();
+    root.requestFocus();
   }
 }
