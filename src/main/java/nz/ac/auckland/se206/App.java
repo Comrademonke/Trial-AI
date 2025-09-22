@@ -90,7 +90,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
       } else if (profession.equals("AI Defendant")) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/defendant.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxmlMap.get(profession)));
         Parent root = loader.load();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -120,12 +120,8 @@ public class App extends Application {
         ChatControllerCentre chatController = loader.getController();
         chatController.initialiseChatGpt(trialTxtMap.get(profession), profession);
       } else if (profession.equals("AI Defendant")) {
-        // Return to room with defendant flashback
-        loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
+        loader = new FXMLLoader(App.class.getResource("/fxml/defendant.fxml"));
         root = loader.load();
-        RoomController controller = loader.getController();
-        controller.initialiseChatGpt(trialTxtMap.get(profession), profession);
-        controller.showOverlay();
       } else if (profession.equals("Human Witness")) {
         // Return to room with human witness
         loader = new FXMLLoader(App.class.getResource("/fxml/humanWitnessMemory.fxml"));
@@ -133,7 +129,6 @@ public class App extends Application {
         ChatControllerCentre chatController = loader.getController();
         chatController.initialiseChatGpt(trialTxtMap.get(profession), profession);
       } else {
-        // Return to room for other professions
         loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
         root = loader.load();
         RoomController controller = loader.getController();
