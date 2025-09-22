@@ -2,14 +2,17 @@ package nz.ac.auckland.se206.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -26,10 +29,17 @@ public class DefendantChatController extends ChatControllerCentre {
 
   @FXML private TextArea txtaChat;
   @FXML private Label timer;
-  @FXML private ImageView headphones;
+  @FXML private AnchorPane disc1;
+  @FXML private AnchorPane disc2;
+  @FXML private AnchorPane disc3;
+  @FXML private AnchorPane disc4;
+  @FXML private AnchorPane disc5;
+  @FXML private ImageView basket;
+  @FXML private Button gameButton;
+
   @FXML private VBox flashbackMessage;
   private MediaPlayer mediaPlayer;
-  private int count = 0;
+  private List<AnchorPane> discs;
 
   @Override
   @FXML
@@ -52,22 +62,14 @@ public class DefendantChatController extends ChatControllerCentre {
           mediaPlayer.play();
           pause.play();
         });
-    DraggableMaker.makeDraggable(headphones);
+    DraggableMaker.makeDraggable(basket);
+    discs = Arrays.asList(disc1, disc2, disc3, disc4, disc5);
   }
 
   @FXML
-  public void onFlashbackButtonPress(MouseEvent event) {
-    if (count % 2 == 0) {
-      String audioFile = "src/main/resources/sounds/defendantSfx.mp3";
-
-      Media sound = new Media(new File(audioFile).toURI().toString());
-      this.mediaPlayer = new MediaPlayer(sound);
-
-      this.mediaPlayer.play();
-    } else {
-      this.mediaPlayer.stop();
-    }
-    count++;
+  private void onGameStart(ActionEvent event) {
+    basket.setVisible(true);
+    gameButton.setVisible(false);
   }
 
   @FXML

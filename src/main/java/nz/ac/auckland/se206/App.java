@@ -1,4 +1,5 @@
 package nz.ac.auckland.se206;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import nz.ac.auckland.se206.controllers.ChatControllerCentre;
 import nz.ac.auckland.se206.controllers.RoomController;
+
 /**
  * This is the entry point of the JavaFX application. This class initializes and runs the JavaFX
  * application.
@@ -34,6 +36,7 @@ public class App extends Application {
           "Human Witness", "humanWitnessFlashback.txt");
   private static ArrayList<String> professionsOpened = new ArrayList<>();
   private static Stage primaryStage;
+
   /**
    * The main method that launches the JavaFX application.
    *
@@ -42,6 +45,7 @@ public class App extends Application {
   public static void main(final String[] args) {
     launch();
   }
+
   /**
    * Sets the root of the scene to the specified FXML file.
    *
@@ -51,6 +55,7 @@ public class App extends Application {
   public static void setRoot(String fxml) throws IOException {
     scene.setRoot(loadFxml(fxml));
   }
+
   /**
    * Loads the FXML file and returns the associated node. The method expects that the file is
    * located in "src/main/resources/fxml".
@@ -62,6 +67,7 @@ public class App extends Application {
   private static Parent loadFxml(final String fxml) throws IOException {
     return new FXMLLoader(App.class.getResource("/fxml/" + fxml + ".fxml")).load();
   }
+
   /**
    * Opens a flashback or chat view depending on now many times the profession has been opened.
    *
@@ -74,7 +80,8 @@ public class App extends Application {
 
     // First time talking
     if (!professionsOpened.contains(profession)) {
-      professionsOpened.add(profession); // Add the profession immediately to track that it's been clicked
+      professionsOpened.add(
+          profession); // Add the profession immediately to track that it's been clicked
       if (profession.equals("AI Witness")) {
         // First click - show flashback
         FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/AIWitnessFlashback.fxml"));
@@ -83,7 +90,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
       } else if (profession.equals("AI Defendant")) {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/defendant.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxmlMap.get(profession)));
         Parent root = loader.load();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -107,14 +114,11 @@ public class App extends Application {
         ChatControllerCentre chatController = loader.getController();
         chatController.initialiseChatGpt(trialTxtMap.get(profession), profession);
       } else if (profession.equals("AI Defendant")) {
-        // Return to room with defendant flashback
-        loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
+        loader = new FXMLLoader(App.class.getResource("/fxml/defendant.fxml"));
         root = loader.load();
-        RoomController controller = loader.getController();
-        controller.initialiseChatGpt(trialTxtMap.get(profession), profession);
-        controller.showOverlay();
+        ChatControllerCentre chatController = loader.getController();
+        chatController.initialiseChatGpt(trialTxtMap.get(profession), profession);
       } else {
-        // Return to room for other professions
         loader = new FXMLLoader(App.class.getResource("/fxml/room.fxml"));
         root = loader.load();
         RoomController controller = loader.getController();
@@ -126,6 +130,7 @@ public class App extends Application {
       stage.show();
     }
   }
+
   public static void openFinalPage() throws IOException {
     // Uncomment this to force all professions to be opened before accessing final page
     // if (professionsOpened.size() != 3) {
@@ -137,6 +142,7 @@ public class App extends Application {
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+
   /**
    * This method is invoked when the application starts. It loads and shows the "room" scene.
    *
