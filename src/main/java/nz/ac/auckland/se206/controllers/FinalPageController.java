@@ -29,9 +29,10 @@ public class FinalPageController {
   @FXML private Button submitButton;
   @FXML private Label optionPickingMessage;
   @FXML private Label optionTextMessage;
+  @FXML private Label questionLabel;
 
   private Timeline timeline;
-  private final int totalSeconds = 10;
+  private final int totalSeconds = 60;
   private int remainingSeconds = totalSeconds;
   private boolean isYesClicked = false;
   private boolean isNoClicked = false;
@@ -49,6 +50,16 @@ public class FinalPageController {
     // Erase all text
     optionPickingMessage.setText("");
     optionTextMessage.setText("");
+
+    txtInput.clear();
+
+    // Enable all buttons
+    submitButton.setDisable(false);
+    yesButton.setDisable(false);
+    noButton.setDisable(false);
+    txtInput.setDisable(false);
+
+    questionLabel.setText("Briefly state why?");
 
     // Prevent line skipping with enter key
     txtInput.addEventFilter(
@@ -90,7 +101,6 @@ public class FinalPageController {
 
                     // auto submit everything
                     onSendClick();
-                    // showOverlay();
                     String audioFile2 = "src/main/resources/sounds/gameOver.mp3";
 
                     Media sound2 = new Media(new File(audioFile2).toURI().toString());
@@ -160,9 +170,6 @@ public class FinalPageController {
       txtInput.getStyleClass().add("text-area-error");
       optionTextMessage.setText("Please provide an answer");
       return;
-    } else if (message.isEmpty() && (remainingSeconds <= 0)) {
-      // call losing vbox
-      System.out.println("you lose!!!");
     }
 
     // Check if at least yes or no is clicked
@@ -171,35 +178,46 @@ public class FinalPageController {
       return;
     }
 
-    // The no button is clicked and timer is out
-    if (isNoClicked == true && (remainingSeconds <= 0) && !(message.isEmpty())) {
-      // call losing vbox
-      System.out.println("You lose!!!");
-    }
-
     txtInput.clear();
 
-    // Disable add buttons and stop timer
+    // No message and out of time
+    if (message.isEmpty() && (remainingSeconds <= 0)) {
+      txtInput.appendText("You Lose! Incorrect rationale was given.");
+    } // The no button is clicked and timer is out
+    else if (isNoClicked == true && (remainingSeconds <= 0) && !(message.isEmpty())) {
+      txtInput.appendText("You Lose! Incorrect verdict was chosen.");
+    } // None of the buttons are chosen and timer runs out
+    else if (isNoClicked == false && isYesClicked == false && (remainingSeconds <= 0)) {
+      txtInput.appendText("You Lose ! No verdict was chosen.");
+    }
+
+    // Disable all buttons and stop timer
     submitButton.setDisable(true);
     timeline.stop();
     yesButton.setDisable(true);
     noButton.setDisable(true);
     txtInput.setDisable(true);
+    onInputStartUp();
 
-    // Task<Void> task =
-    //     new Task<>() {
-    //       @Override
-    //       protected Void call() {
-    //         try {
-    //           runGpt(message);
-    //         } catch (ApiProxyException e) {
-    //           e.printStackTrace();
+    questionLabel.setText("Feedback:");
+
+    // yes button is chosen and message is not empty
+    // if (isYesClicked == true && !(message.isEmpty())) {
+    //   Task<Void> task =
+    //       new Task<>() {
+    //         @Override
+    //         protected Void call() {
+    //           try {
+    //             runGpt(message);
+    //           } catch (ApiProxyException e) {
+    //             e.printStackTrace();
+    //           }
+    //           return null;
     //         }
-    //         return null;
-    //       }
-    //     };
+    //       };
 
-    // new Thread(task).start();
+    //   new Thread(task).start();
+    // }
   }
 
   @FXML
