@@ -50,6 +50,21 @@ public class FinalPageController {
     optionPickingMessage.setText("");
     optionTextMessage.setText("");
 
+    // Prevent line skipping with enter key
+    txtInput.addEventFilter(
+        KeyEvent.KEY_PRESSED,
+        event -> {
+          if (event.getCode() == KeyCode.ENTER) {
+            event.consume();
+
+            if (isNoClicked || isYesClicked) {
+              onSendClick();
+            } else {
+              optionPickingMessage.setText("Please Choose Yes or No");
+            }
+          }
+        });
+
     String audioFile = "src/main/resources/sounds/oneMinuteLeft.mp3";
 
     Media sound = new Media(new File(audioFile).toURI().toString());
@@ -175,14 +190,6 @@ public class FinalPageController {
     //     };
 
     // new Thread(task).start();
-  }
-
-  @FXML
-  public void sendMessage(KeyEvent event) {
-    if (event.getCode().equals(KeyCode.ENTER)) {
-      // Send the message
-      onSendClick();
-    }
   }
 
   @FXML
