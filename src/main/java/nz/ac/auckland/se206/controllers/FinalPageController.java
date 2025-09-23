@@ -31,6 +31,8 @@ public class FinalPageController {
   private Timeline timeline;
   private final int totalSeconds = 60;
   private int remainingSeconds = totalSeconds;
+  private boolean isYesClicked = false;
+  private boolean isNoClicked = false;
 
   /**
    * Initializes the final page.
@@ -64,7 +66,9 @@ public class FinalPageController {
 
                   if (remainingSeconds <= 0) {
                     timeline.stop();
-                    showOverlay();
+
+                    // auto submit everything
+                    // showOverlay();
                     String audioFile2 = "src/main/resources/sounds/gameOver.mp3";
 
                     Media sound2 = new Media(new File(audioFile2).toURI().toString());
@@ -86,14 +90,43 @@ public class FinalPageController {
 
   @FXML
   private void onYesClick() {
-    overlaySuccess.setVisible(true);
+    yesButton.setScaleX(1.2);
+    yesButton.setScaleY(1.2);
+
+    isYesClicked = true;
+    isNoClicked = false;
+    setYesOrNoClick();
+
+    // overlaySuccess.setVisible(true);
     timeline.stop();
   }
 
   @FXML
   private void onNoClick() {
-    overlayFailure.setVisible(true);
+    noButton.setScaleX(1.2);
+    noButton.setScaleY(1.2);
+
+    isNoClicked = true;
+    isYesClicked = false;
+    setYesOrNoClick();
+
+    // overlayFailure.setVisible(true);
     timeline.stop();
+  }
+
+  private void setYesOrNoClick() {
+    // If yes and no are not clicked yet
+    if (isNoClicked == false && isYesClicked == false) {
+      return;
+      // If no is clicked after yes
+    } else if (isNoClicked) {
+      yesButton.setScaleX(1);
+      yesButton.setScaleY(1);
+      // If yes is clicked after no
+    } else if (isYesClicked) {
+      noButton.setScaleX(1);
+      noButton.setScaleY(1);
+    }
   }
 
   @FXML
