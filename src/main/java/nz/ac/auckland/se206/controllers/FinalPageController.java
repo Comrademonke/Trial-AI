@@ -98,7 +98,6 @@ public class FinalPageController {
     setYesOrNoClick();
 
     // overlaySuccess.setVisible(true);
-    timeline.stop();
   }
 
   @FXML
@@ -111,7 +110,6 @@ public class FinalPageController {
     setYesOrNoClick();
 
     // overlayFailure.setVisible(true);
-    timeline.stop();
   }
 
   private void setYesOrNoClick() {
@@ -136,7 +134,12 @@ public class FinalPageController {
       return;
     }
     txtInput.clear();
+
+    // Disable add buttons and stop timer
     submitButton.setDisable(true);
+    timeline.stop();
+    yesButton.setDisable(true);
+    noButton.setDisable(true);
 
     // Task<Void> task =
     //     new Task<>() {
