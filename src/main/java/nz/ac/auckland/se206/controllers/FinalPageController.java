@@ -27,6 +27,8 @@ public class FinalPageController {
   @FXML private Button noButton;
   @FXML private TextArea txtInput;
   @FXML private Button submitButton;
+  @FXML private Label optionPickingMessage;
+  @FXML private Label optionTextMessage;
 
   private Timeline timeline;
   private final int totalSeconds = 60;
@@ -43,6 +45,10 @@ public class FinalPageController {
   public void initialize() throws ApiProxyException {
     // Stop 2:00 timer and play flashback tts
     TimerManager.getInstance().stop();
+
+    // Erase all text
+    optionPickingMessage.setText("");
+    optionTextMessage.setText("");
 
     String audioFile = "src/main/resources/sounds/oneMinuteLeft.mp3";
 
@@ -113,6 +119,7 @@ public class FinalPageController {
   }
 
   private void setYesOrNoClick() {
+    optionPickingMessage.setText("");
     // If yes and no are not clicked yet
     if (isNoClicked == false && isYesClicked == false) {
       return;
@@ -130,9 +137,21 @@ public class FinalPageController {
   @FXML
   private void onSendClick() {
     String message = txtInput.getText().trim();
+
+    // Checks for empty string
     if (message.isEmpty()) {
+      txtInput.getStyleClass().removeAll("text-area-normal", "text-area-error");
+      txtInput.getStyleClass().add("text-area-error");
+      optionTextMessage.setText("Please provide an answer");
       return;
     }
+
+    // Check if at least yes or no is clicked
+    if (isNoClicked == false && isYesClicked == false) {
+      optionPickingMessage.setText("Please Choose Yes or No");
+      return;
+    }
+
     txtInput.clear();
 
     // Disable add buttons and stop timer
@@ -140,6 +159,7 @@ public class FinalPageController {
     timeline.stop();
     yesButton.setDisable(true);
     noButton.setDisable(true);
+    txtInput.setDisable(true);
 
     // Task<Void> task =
     //     new Task<>() {
@@ -163,5 +183,12 @@ public class FinalPageController {
       // Send the message
       onSendClick();
     }
+  }
+
+  @FXML
+  private void onInputStartUp() {
+    txtInput.getStyleClass().removeAll("text-area-normal", "text-area-error");
+    txtInput.getStyleClass().add("text-area-normal");
+    optionTextMessage.setText("");
   }
 }

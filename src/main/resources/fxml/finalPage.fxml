@@ -15,7 +15,7 @@
   <children>
     <AnchorPane prefHeight="599.0" prefWidth="789.0">
       <children>
-        <Button fx:id="yesButton" alignment="CENTER" layoutX="297.0" layoutY="226.0" mnemonicParsing="false" onAction="#onYesClick" prefHeight="67.0" prefWidth="70.0" style="-fx-background-color: green; -fx-background-radius: 2000;" text="Yes" textFill="WHITE">
+        <Button fx:id="yesButton" alignment="CENTER" layoutX="297.0" layoutY="191.0" mnemonicParsing="false" onAction="#onYesClick" prefHeight="67.0" prefWidth="70.0" style="-fx-background-color: green; -fx-background-radius: 2000;" text="Yes" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -29,7 +29,7 @@
                      </color>
                   </DropShadow>
                </effect></Button>
-        <Button fx:id="noButton" layoutX="438.0" layoutY="226.0" mnemonicParsing="false" onAction="#onNoClick" prefHeight="67.0" prefWidth="70.0" style="-fx-background-color: red; -fx-background-radius: 2000;" text="No" textFill="WHITE">
+        <Button fx:id="noButton" layoutX="438.0" layoutY="191.0" mnemonicParsing="false" onAction="#onNoClick" prefHeight="67.0" prefWidth="70.0" style="-fx-background-color: red; -fx-background-radius: 2000;" text="No" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -43,27 +43,37 @@
                      </color>
                   </DropShadow>
                </effect></Button>
-        <Label layoutX="75.0" layoutY="55.0" text="Was the AI defendant Ethical or Not?">
+        <Label layoutX="75.0" layoutY="37.0" text="Was the AI defendant Ethical or Not?">
           <font>
             <Font size="40.0" />
           </font>
         </Label>
-        <Label fx:id="timer" alignment="CENTER" layoutX="286.0" layoutY="144.0" prefHeight="95.0" prefWidth="230.0" text="00:10">
+        <Label fx:id="timer" alignment="CENTER" layoutX="286.0" layoutY="109.0" prefHeight="95.0" prefWidth="230.0" text="00:10">
           <font>
             <Font size="50.0" />
           </font>
         </Label>
-        <Label layoutX="191.0" layoutY="113.0" text="you have 60 seconds to decide">
+        <Label layoutX="191.0" layoutY="88.0" text="you have 60 seconds to decide">
           <font>
             <Font size="30.0" />
           </font>
         </Label>
             <Button layoutX="657.0" layoutY="519.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="102.0" text="Restart Game" />
-            <TextArea fx:id="txtInput" layoutX="235.0" layoutY="342.0" prefHeight="146.0" prefWidth="336.0" promptText="Input text here" wrapText="true" />
-            <Button fx:id="submitButton" layoutX="368.0" layoutY="499.0" mnemonicParsing="false" onAction="#onSendClick" prefHeight="39.0" prefWidth="70.0" text="Submit" />
-            <Label alignment="CENTER" layoutX="323.0" layoutY="306.0" prefHeight="33.0" prefWidth="160.0" text="Briefly state why?">
+            <TextArea fx:id="txtInput" layoutX="235.0" layoutY="339.0" onMouseClicked="#onInputStartUp" prefHeight="146.0" prefWidth="336.0" promptText="Input text here" stylesheets="@../css/finalPageStyle.css" wrapText="true" />
+            <Button fx:id="submitButton" layoutX="368.0" layoutY="529.0" mnemonicParsing="false" onAction="#onSendClick" prefHeight="39.0" prefWidth="70.0" text="Submit" />
+            <Label alignment="CENTER" layoutX="323.0" layoutY="302.0" prefHeight="33.0" prefWidth="160.0" text="Briefly state why?">
                <font>
                   <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="optionTextMessage" alignment="CENTER" layoutX="234.0" layoutY="480.0" prefHeight="46.0" prefWidth="336.0" text="Message" textFill="RED">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="optionPickingMessage" alignment="CENTER" layoutX="227.0" layoutY="262.0" prefHeight="46.0" prefWidth="336.0" text="Message" textFill="RED">
+               <font>
+                  <Font size="18.0" />
                </font>
             </Label>
       </children>
