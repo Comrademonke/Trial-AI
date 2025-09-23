@@ -31,7 +31,7 @@ public class FinalPageController {
   @FXML private Label optionTextMessage;
 
   private Timeline timeline;
-  private final int totalSeconds = 60;
+  private final int totalSeconds = 10;
   private int remainingSeconds = totalSeconds;
   private boolean isYesClicked = false;
   private boolean isNoClicked = false;
@@ -89,6 +89,7 @@ public class FinalPageController {
                     timeline.stop();
 
                     // auto submit everything
+                    onSendClick();
                     // showOverlay();
                     String audioFile2 = "src/main/resources/sounds/gameOver.mp3";
 
@@ -154,17 +155,26 @@ public class FinalPageController {
     String message = txtInput.getText().trim();
 
     // Checks for empty string
-    if (message.isEmpty()) {
+    if (message.isEmpty() && !(remainingSeconds <= 0)) {
       txtInput.getStyleClass().removeAll("text-area-normal", "text-area-error");
       txtInput.getStyleClass().add("text-area-error");
       optionTextMessage.setText("Please provide an answer");
       return;
+    } else if (message.isEmpty() && (remainingSeconds <= 0)) {
+      // call losing vbox
+      System.out.println("you lose!!!");
     }
 
     // Check if at least yes or no is clicked
-    if (isNoClicked == false && isYesClicked == false) {
+    if (isNoClicked == false && isYesClicked == false && !(remainingSeconds <= 0)) {
       optionPickingMessage.setText("Please Choose Yes or No");
       return;
+    }
+
+    // The no button is clicked and timer is out
+    if (isNoClicked == true && (remainingSeconds <= 0) && !(message.isEmpty())) {
+      // call losing vbox
+      System.out.println("You lose!!!");
     }
 
     txtInput.clear();
