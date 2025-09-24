@@ -25,6 +25,7 @@ import nz.ac.auckland.apiproxy.chat.openai.Choice;
 import nz.ac.auckland.apiproxy.config.ApiProxyConfig;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
+import nz.ac.auckland.se206.ChatStorage;
 import nz.ac.auckland.se206.TimerManager;
 import nz.ac.auckland.se206.prompts.PromptEngineering;
 
@@ -271,6 +272,7 @@ public class FinalPageController {
 
   @FXML
   private void onResetGame(ActionEvent event) throws ApiProxyException, IOException {
+    ChatStorage.resetAllChats();
     App.setRoot("room");
   }
 
