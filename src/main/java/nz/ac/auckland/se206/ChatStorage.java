@@ -38,4 +38,11 @@ public class ChatStorage {
   public static ChatMessage getSystemPrompt(String profession) {
     return systemPrompts.get(profession);
   }
+
+  // Reset all chats
+  public static void resetAllChats() {
+    characterHistories.clear();
+    systemPrompts.clear();
+    presentDayMessages.clear();
+  }
 }

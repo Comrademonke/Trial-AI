@@ -109,6 +109,10 @@ public class App extends Application {
 
   public static void openFinalPage() throws IOException {
     Parent root = loadFxml("finalPage");
+
+    // Clears professions to enable first time visiting again when game resets
+    professionsOpened.clear();
+
     scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.show();
