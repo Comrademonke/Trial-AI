@@ -37,7 +37,6 @@ public abstract class ChatControllerCentre {
   @FXML private Label timer;
   @FXML private ProgressBar progressBar;
 
-  private ChatCompletionRequest chatCompletionRequest;
   private String profession;
 
   /**
@@ -93,14 +92,16 @@ public abstract class ChatControllerCentre {
   public void initialiseChatGpt(String file, String profession) {
     this.profession = profession;
 
-    List<ChatMessage> history = ChatStorage.getHistory(profession);
+    // Prints previous conversations in chat box
+    List<ChatMessage> history = ChatStorage.getHistory(this.profession);
     for (ChatMessage msg : history) {
       appendChatMessage(msg);
     }
+
+    // Add prompt
     ChatMessage systemMsg = new ChatMessage("system", getSystemPrompt(file));
     systemMsg.setSystemPrompt(true);
-    // Add prompt
-    ChatStorage.setSystemPrompt(profession, systemMsg);
+    ChatStorage.setSystemPrompt(this.profession, systemMsg);
 
     Task<Void> task =
         new Task<>() {
@@ -126,8 +127,11 @@ public abstract class ChatControllerCentre {
     if (msg.isSystemPrompt()) {
       return;
     }
-    String displayRole = msg.getRole().equals("assistant") ? this.profession : msg.getRole();
-    txtaChat.appendText(displayRole + ": " + msg.getContent() + "\n\n");
+    if ("user".equals(msg.getRole())) {
+      txtaChat.appendText("user: " + msg.getContent() + "\n\n");
+      return;
+    }
+    txtaChat.appendText(msg.getContent() + "\n\n");
   }
 
   /**
@@ -145,10 +149,10 @@ public abstract class ChatControllerCentre {
             .setTemperature(0.2)
             .setTopP(0.5)
             .setModel(Model.GPT_4_1_MINI)
-            .setMaxTokens(1);
+            .setMaxTokens(50);
 
     // Get prompt
-    ChatMessage systemPrompt = ChatStorage.getSystemPrompt(profession);
+    ChatMessage systemPrompt = ChatStorage.getSystemPrompt(this.profession);
     if (systemPrompt != null) {
       request.addMessage(systemPrompt);
     }
@@ -169,7 +173,17 @@ public abstract class ChatControllerCentre {
     Choice choice = result.getChoices().iterator().next();
     ChatMessage assistantMsg = choice.getChatMessage();
 
-    ChatStorage.addMessage(profession, assistantMsg);
+    String content = assistantMsg.getContent().trim();
+    String prefix = "[" + this.profession + "]:";
+    // If GPT already added the same prefix, strip it
+    if (content.startsWith(prefix) && this.profession != "user") {
+      content = content.substring(prefix.length()).trim();
+    }
+
+    // This makes sure, the gpt will know who said what
+    assistantMsg.setContent(prefix + " " + content);
+    ChatStorage.addMessage(this.profession, assistantMsg);
+
     Platform.runLater(() -> appendChatMessage(assistantMsg));
 
     return assistantMsg;
