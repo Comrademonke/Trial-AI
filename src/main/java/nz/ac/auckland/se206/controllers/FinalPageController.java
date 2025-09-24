@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -208,11 +207,11 @@ public class FinalPageController {
     // No message and out of time
     if (message.isEmpty()) {
       txtInput.appendText("You Lose! Incorrect rationale was given.");
-    } // The no button is clicked and timer is out
-    else if (isNoClicked == true && !(message.isEmpty())) {
+    } else if (isNoClicked == true && !(message.isEmpty())) {
+      // The no button is clicked and timer is out
       txtInput.appendText("You Lose! Incorrect verdict was chosen.");
-    } // None of the buttons are chosen and timer runs out
-    else if (isNoClicked == false && isYesClicked == false) {
+    } else if (isNoClicked == false && isYesClicked == false) {
+      // None of the buttons are chosen and timer runs out
       txtInput.appendText("You Lose! No verdict was chosen.");
     }
 
@@ -228,17 +227,27 @@ public class FinalPageController {
 
     // yes button is chosen and message is not empty
     if (isYesClicked == true && !(message.isEmpty())) {
-      txtInput.appendText("You Win! ");
-
-      // Display the winning vbox
-      setWinOverlay();
-
       Task<Void> task =
           new Task<>() {
             @Override
             protected Void call() {
               try {
-                runGpt(message);
+                ChatMessage feedback = runGpt(message);
+                boolean correctRationale = rationaleChecker(feedback.getContent());
+                // Check rationale
+                if (correctRationale) {
+                  // Display win
+                  txtInput.appendText("You Win! ");
+
+                  setWinOverlay();
+                } else {
+                  // Display loss
+                  txtInput.appendText("You Lose! ");
+                  setLoseOverlay();
+                }
+                // Append feedback
+                appendChatMessage(feedback);
+
               } catch (ApiProxyException e) {
                 e.printStackTrace();
               }
@@ -247,12 +256,6 @@ public class FinalPageController {
           };
 
       new Thread(task).start();
-
-      // Check rationale
-
-    } else {
-      // Display the losing vbox
-      setLoseOverlay();
     }
 
     // Enable the restart button
@@ -305,7 +308,7 @@ public class FinalPageController {
             .setTemperature(0.2)
             .setTopP(0.5)
             .setModel(Model.GPT_4_1_MINI)
-            .setMaxTokens(50);
+            .setMaxTokens(100);
 
     // Get prompt
     String systemPrompt = getSystemPrompt("feedbackResponse.txt");
@@ -316,8 +319,6 @@ public class FinalPageController {
     ChatCompletionResult result = request.execute();
     Choice choice = result.getChoices().iterator().next();
     ChatMessage assistantMsg = choice.getChatMessage();
-
-    Platform.runLater(() -> appendChatMessage(assistantMsg));
 
     return assistantMsg;
   }
@@ -331,5 +332,29 @@ public class FinalPageController {
 
   private String getSystemPrompt(String profession) {
     return PromptEngineering.getPrompt(profession);
+  }
+
+  private boolean rationaleChecker(String message) throws ApiProxyException {
+    ApiProxyConfig config = ApiProxyConfig.readConfig();
+    ChatCompletionRequest request =
+        new ChatCompletionRequest(config)
+            .setN(1)
+            .setTemperature(0.1)
+            .setTopP(0.3)
+            .setModel(Model.GPT_4_1_MINI)
+            .setMaxTokens(30);
+
+    // Get prompt
+    String systemPrompt = getSystemPrompt("rationaleChecker.txt");
+
+    request.addMessage("system", systemPrompt);
+
+    ChatCompletionResult result = request.execute();
+    Choice choice = result.getChoices().iterator().next();
+    ChatMessage response = choice.getChatMessage();
+    System.out.println(response.getContent());
+
+    // Returns true for correct rationale
+    return response.getContent().trim().equalsIgnoreCase("CORRECT");
   }
 }
