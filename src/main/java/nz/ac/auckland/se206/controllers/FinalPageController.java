@@ -42,6 +42,7 @@ public class FinalPageController {
   @FXML private Label optionTextMessage;
   @FXML private Label questionLabel;
   @FXML private Button restartButton;
+  @FXML private Label waitingLabel;
 
   private Timeline timeline;
   private final int totalSeconds = 60;
@@ -125,12 +126,6 @@ public class FinalPageController {
 
                     // auto submit everything
                     onSendClick();
-                    String audioFile2 = "src/main/resources/sounds/gameOver.mp3";
-
-                    Media sound2 = new Media(new File(audioFile2).toURI().toString());
-                    MediaPlayer mediaPlayer2 = new MediaPlayer(sound2);
-
-                    mediaPlayer2.play();
                   }
                 }));
     timeline.setCycleCount(totalSeconds);
@@ -225,6 +220,8 @@ public class FinalPageController {
 
     questionLabel.setText("Feedback:");
 
+    showOverlay();
+
     // yes button is chosen and message is not empty
     if (isYesClicked == true && !(message.isEmpty())) {
       Task<Void> task =
@@ -274,7 +271,7 @@ public class FinalPageController {
     // Display winning
     overlaySuccess.setVisible(true);
     Timeline winTime =
-        new Timeline(new KeyFrame(Duration.seconds(2), e -> overlaySuccess.setVisible(false)));
+        new Timeline(new KeyFrame(Duration.seconds(1.5), e -> overlaySuccess.setVisible(false)));
     winTime.play();
   }
 
@@ -282,7 +279,25 @@ public class FinalPageController {
     // Display losing
     overlayFailure.setVisible(true);
     Timeline loseTime =
-        new Timeline(new KeyFrame(Duration.seconds(2), e -> overlayFailure.setVisible(false)));
+        new Timeline(new KeyFrame(Duration.seconds(1.5), e -> overlayFailure.setVisible(false)));
+    loseTime.play();
+  }
+
+  private void showOverlay() {
+    overlay.setVisible(true);
+
+    Timeline loseTime =
+        new Timeline(
+            new KeyFrame(Duration.seconds(0.5), e -> waitingLabel.setText("Awaiting Results.")),
+            new KeyFrame(Duration.seconds(1), e -> waitingLabel.setText("Awaiting Results..")),
+            new KeyFrame(Duration.seconds(1.5), e -> waitingLabel.setText("Awaiting Results...")),
+            new KeyFrame(Duration.seconds(2), e -> waitingLabel.setText("Awaiting Results....")),
+            new KeyFrame(Duration.seconds(2.5), e -> waitingLabel.setText("Awaiting Results.....")),
+            new KeyFrame(Duration.seconds(3), e -> waitingLabel.setText("Awaiting Results.")),
+            new KeyFrame(Duration.seconds(3.5), e -> waitingLabel.setText("Awaiting Results.")),
+            new KeyFrame(Duration.seconds(4), e -> waitingLabel.setText("Awaiting Results...")),
+            new KeyFrame(Duration.seconds(4.5), e -> waitingLabel.setText("Awaiting Results....")),
+            new KeyFrame(Duration.seconds(5), e -> overlay.setVisible(false)));
     loseTime.play();
   }
 
@@ -352,7 +367,6 @@ public class FinalPageController {
     ChatCompletionResult result = request.execute();
     Choice choice = result.getChoices().iterator().next();
     ChatMessage response = choice.getChatMessage();
-    System.out.println(response.getContent());
 
     // Returns true for correct rationale
     return response.getContent().trim().equalsIgnoreCase("CORRECT");
