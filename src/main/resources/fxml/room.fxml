@@ -27,7 +27,7 @@
         <Rectangle fx:id="rectPerson2" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="173.0" layoutX="322.0" layoutY="140.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="183.0" />
         <Rectangle fx:id="rectPerson3" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="357.0" layoutX="539.0" layoutY="225.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="259.0" />
 
-        <Label layoutX="21.0" layoutY="22.0" prefHeight="66.0" prefWidth="243.0" text="Trial AI" textFill="WHITE">
+        <Label layoutX="21.0" layoutY="22.0" prefHeight="66.0" prefWidth="163.0" text="Trial AI" textFill="WHITE">
           <font>
             <Font size="50.0" />
           </font>
@@ -42,12 +42,12 @@
             </StackPane>
 
         <Button fx:id="btnGuess" layoutX="320.0" layoutY="69.0" mnemonicParsing="false" onAction="#onDecisionClick" text="Make Your Final Decision" />
-        <Label layoutX="292.0" layoutY="45.0" text="Click on each character to find out!" textFill="WHITE">
+        <Label layoutX="284.0" layoutY="46.0" style="-fx-background-color: #000;" text="Click on each character to find out!" textFill="WHITE">
           <font>
             <Font size="15.0" />
           </font>
         </Label>
-        <Label layoutX="220.0" layoutY="16.0" text="Did the AI unethically steal from music artists?" textFill="WHITE">
+        <Label layoutX="207.0" layoutY="21.0" style="-fx-background-color: #000;" text="Did the AI unethically steal from music artists?" textFill="WHITE">
           <font>
             <Font size="20.0" />
           </font>
