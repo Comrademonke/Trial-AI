@@ -104,7 +104,8 @@ public class DefendantChatController extends ChatControllerCentre {
     } else {
       basket.setVisible(false);
       txtaChat.appendText(
-          "[AI Defendant]: I hope you can better understand the types of songs I use now!");
+          "[AI Defendant]: I hope you can better understand the types of songs I use now!"
+              + "\n\n");
       message.setText("Game Over! You made the correct judgement on " + score + "/5 songs");
       messageBox.setVisible(true);
       Platform.runLater(
