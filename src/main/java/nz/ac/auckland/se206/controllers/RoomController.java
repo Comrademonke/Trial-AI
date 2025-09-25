@@ -54,6 +54,10 @@ public class RoomController {
   @FXML private TextField txtInput;
   @FXML private StackPane warningMessage;
 
+  public static void resetTimer() {
+    isFirstTimeInit = true;
+  }
+
   /**
    * Initialises the room view. Start's the 2:00 timer and binds it's progress to the progress bar.
    */
@@ -144,6 +148,7 @@ public class RoomController {
   @FXML
   private void onSendClick() {
     String message = txtInput.getText().trim();
+    // Checks for empty messages
     if (message.isEmpty()) {
       return;
     }
@@ -152,6 +157,7 @@ public class RoomController {
     ChatStorage.addMessage(this.profession, msg);
     appendChatMessage(msg);
 
+    // Runs through gpt for a response
     Task<Void> task =
         new Task<>() {
           @Override
@@ -280,9 +286,5 @@ public class RoomController {
    */
   private String getSystemPrompt(String file) {
     return PromptEngineering.getPrompt(file);
-  }
-
-  public static void resetTimer() {
-    isFirstTimeInit = true;
   }
 }
