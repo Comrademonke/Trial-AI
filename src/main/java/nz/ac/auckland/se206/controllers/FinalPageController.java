@@ -319,6 +319,7 @@ public class FinalPageController {
   private void onResetGame(ActionEvent event) throws ApiProxyException, IOException {
     ChatStorage.resetAllChats();
     RoomController.resetTimer();
+    // TimerManager.resetTimer();
     App.setRoot("room");
   }
 
