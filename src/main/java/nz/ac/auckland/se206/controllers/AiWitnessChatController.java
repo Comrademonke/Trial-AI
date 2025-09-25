@@ -36,12 +36,31 @@ import nz.ac.auckland.se206.ChatStorage;
 public class AiWitnessChatController extends ChatControllerCentre {
 
   // Tracks how many times the AI witness has been clicked
+  @FXML private ImageView flashbackOne;
+  @FXML private ImageView flashbackTwo;
+  @FXML private ImageView flashbackThree;
+  @FXML private Button continueButton;
+  @FXML private TextArea txtaChat;
+  @FXML private Slider slider;
+  @FXML private VBox flashbackMessage;
+  @FXML private ImageView speechBubble1;
+  @FXML private ImageView speechBubble2;
+  @FXML private ImageView speechBubble4;
+  @FXML private ImageView speechBubble5;
+  @FXML private ImageView speechBubble6;
+  @FXML private ImageView speechBubble7;
+  @FXML private ImageView speechBubble8;
+  @FXML private ImageView speechBubble9;
+  @FXML private Button clearNoiseBtn;
+  @FXML private ImageView rumourBin;
+  @FXML private TextArea chatTextArea;
+
   private int aiWitnessClickCount = 0;
   private int flashbackStep = 1;
-  @FXML private ImageView FlashbackOne;
-  @FXML private ImageView FlashbackTwo;
-  @FXML private ImageView FlashbackThree;
-  @FXML private Button continueButton;
+  private final Map<ImageView, Label> speechBubbleLabels = new HashMap<>();
+  private Label instructionLabel;
+  private Label completionLabel;
+  private List<String> playerActions = new ArrayList<>();
 
   /**
    * Handles clicks on the AI witness. Shows flashback scene on first click, memory on subsequent
@@ -90,31 +109,6 @@ public class AiWitnessChatController extends ChatControllerCentre {
       e.printStackTrace();
     }
   }
-
-  @FXML private TextArea txtaChat;
-  @FXML private Slider slider;
-  @FXML private VBox flashbackMessage;
-  private final Map<ImageView, Label> speechBubbleLabels = new HashMap<>();
-  private Label instructionLabel;
-
-  @FXML private ImageView speechBubble1;
-  @FXML private ImageView speechBubble2;
-  // @FXML private ImageView speechBubble3;
-  @FXML private ImageView speechBubble4;
-  @FXML private ImageView speechBubble5;
-  @FXML private ImageView speechBubble6;
-  @FXML private ImageView speechBubble7;
-  @FXML private ImageView speechBubble8;
-  @FXML private ImageView speechBubble9;
-  // @FXML private ImageView speechBubble10;
-  // @FXML private ImageView speechBubble11;
-  // @FXML private ImageView speechBubble12;
-  @FXML private Button clearNoiseBtn;
-  @FXML private ImageView rumourBin;
-  @FXML private TextArea chatTextArea;
-
-  private Label completionLabel;
-  private List<String> playerActions = new ArrayList<>();
 
   /**
    * Logs a player action for tracking their progress through the memory/puzzle.
@@ -199,15 +193,15 @@ public class AiWitnessChatController extends ChatControllerCentre {
     switch (flashbackStep) {
       case 2:
         // Show second flashback
-        FlashbackOne.setVisible(false);
-        FlashbackTwo.setVisible(true);
-        FlashbackThree.setVisible(false);
+        flashbackOne.setVisible(false);
+        flashbackTwo.setVisible(true);
+        flashbackThree.setVisible(false);
         break;
       case 3:
         // Show third flashback
-        FlashbackOne.setVisible(false);
-        FlashbackTwo.setVisible(false);
-        FlashbackThree.setVisible(true);
+        flashbackOne.setVisible(false);
+        flashbackTwo.setVisible(false);
+        flashbackThree.setVisible(true);
         if (continueButton != null) {
           continueButton.setText("Enter Memory");
         }
@@ -229,11 +223,11 @@ public class AiWitnessChatController extends ChatControllerCentre {
     }
 
     // Initialize flashback UI if we're in the flashback scene
-    if (FlashbackOne != null && continueButton != null) {
+    if (flashbackOne != null && continueButton != null) {
       // Show first flashback, hide others
-      FlashbackOne.setVisible(true);
-      FlashbackTwo.setVisible(false);
-      FlashbackThree.setVisible(false);
+      flashbackOne.setVisible(true);
+      flashbackTwo.setVisible(false);
+      flashbackThree.setVisible(false);
       continueButton.setText("Continue");
       flashbackStep = 1;
     }
@@ -370,16 +364,12 @@ public class AiWitnessChatController extends ChatControllerCentre {
   private void hideAllSpeechBubbles() {
     speechBubble1.setVisible(false);
     speechBubble2.setVisible(false);
-    // speechBubble3.setVisible(false);
     speechBubble4.setVisible(false);
     speechBubble5.setVisible(false);
     speechBubble6.setVisible(false);
     speechBubble7.setVisible(false);
     speechBubble8.setVisible(false);
     speechBubble9.setVisible(false);
-    // speechBubble10.setVisible(false);
-    // speechBubble11.setVisible(false);
-    // speechBubble12.setVisible(false);
 
     // Hide all labels
     for (Label label : speechBubbleLabels.values()) {
@@ -416,7 +406,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
     bubble.setLayoutX(0);
     bubble.setLayoutY(0);
 
-    label.setVisible(false); // Always start hidden
+    label.setVisible(false);
     speechBubbleLabels.put(bubble, label);
   }
 
@@ -428,13 +418,8 @@ public class AiWitnessChatController extends ChatControllerCentre {
         speechBubble4, "I thought I heard something about consent, but not sure.");
     addTextToSpeechBubble(speechBubble8, "Either way, musicians are upset.");
     addTextToSpeechBubble(speechBubble5, "They think their styles were copied.");
-    // addTextToSpeechBubble(speechBubble3, "It sounds like the AI just stole the music.");
     addTextToSpeechBubble(speechBubble9, "I don’t know... inspiration isn’t the same as stealing.");
-    // addTextToSpeechBubble(speechBubble10, "But everyone keeps calling it unethical.");
     addTextToSpeechBubble(speechBubble6, "Rumours spread so quickly about this stuff.");
-    //   addTextToSpeechBubble(speechBubble11, "Hard to tell what’s true anymore...");
-    //   addTextToSpeechBubble(
-    //       speechBubble12, "Still, people say the whole story is clear — the AI crossed a line.");
   }
 
   private void showSpeechBubble(int value) {
@@ -457,19 +442,13 @@ public class AiWitnessChatController extends ChatControllerCentre {
     if (value >= 7) {
       showBubbleWithText(speechBubble5);
     }
-    // if (value >= 8) {
-    //   showBubbleWithText(speechBubble3);
-    // }
     if (value >= 9) {
       showBubbleWithText(speechBubble9);
-      // showBubbleWithText(speechBubble10);
     }
     if (value >= 10) {
       showBubbleWithText(speechBubble6);
-      // showBubbleWithText(speechBubble11);
     }
     if (value >= 11) {
-      // showBubbleWithText(speechBubble12);
       // Only show clear button if it hasn't been clicked yet
       clearNoiseBtn.setVisible(!AiWitnessStateManager.getInstance().hasClickedClearNoise());
       slider.setVisible(false);
@@ -490,14 +469,30 @@ public class AiWitnessChatController extends ChatControllerCentre {
 
   private int getBubbleNumber(ImageView bubble) {
     // Mapping based on order of appearance in showSpeechBubble method
-    if (bubble == speechBubble2) return 1; // First visible
-    if (bubble == speechBubble1) return 2; // Second visible
-    if (bubble == speechBubble7) return 3; // Third visible
-    if (bubble == speechBubble4) return 4; // Fourth visible
-    if (bubble == speechBubble8) return 5; // Fifth visible
-    if (bubble == speechBubble5) return 6; // Sixth visible
-    if (bubble == speechBubble9) return 7; // Seventh visible
-    if (bubble == speechBubble6) return 8; // Eighth visible
+    if (bubble == speechBubble2) {
+      return 1;
+    }
+    if (bubble == speechBubble1) {
+      return 2;
+    }
+    if (bubble == speechBubble7) {
+      return 3;
+    }
+    if (bubble == speechBubble4) {
+      return 4;
+    }
+    if (bubble == speechBubble8) {
+      return 5;
+    }
+    if (bubble == speechBubble5) {
+      return 6;
+    }
+    if (bubble == speechBubble9) {
+      return 7;
+    }
+    if (bubble == speechBubble6) {
+      return 8;
+    }
     return -1;
   }
 

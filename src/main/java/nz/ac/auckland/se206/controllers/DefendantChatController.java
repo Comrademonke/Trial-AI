@@ -39,8 +39,8 @@ public class DefendantChatController extends ChatControllerCentre {
   @FXML private Text message;
   @FXML private AnchorPane messageBox;
   @FXML private AnchorPane instructions;
+  @FXML private VBox memoryMessage;
 
-  @FXML private VBox flashbackMessage;
   private List<AnchorPane> discs;
   private AnimationTimer gameLoop;
   private int discIndex = 0;
@@ -49,18 +49,23 @@ public class DefendantChatController extends ChatControllerCentre {
   @Override
   @FXML
   public void initialize() {
+    // Initialises Timer
     try {
       super.initialize();
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
-    flashbackMessage.setVisible(true);
+
+    // Show memory message briefly
+    memoryMessage.setVisible(true);
     Platform.runLater(
         () -> {
           PauseTransition pause = new PauseTransition(Duration.seconds(1));
-          pause.setOnFinished(e -> flashbackMessage.setVisible(false));
+          pause.setOnFinished(e -> memoryMessage.setVisible(false));
           pause.play();
         });
+
+    // Make basket draggable, bounded on a horizontal plane
     DraggableMaker.makeDraggable(basket);
     basket
         .layoutXProperty()
@@ -74,8 +79,8 @@ public class DefendantChatController extends ChatControllerCentre {
                 basket.setLayoutX(maxX);
               }
             });
-    double basketY = basket.getLayoutY();
 
+    double basketY = basket.getLayoutY();
     basket
         .layoutYProperty()
         .addListener(
@@ -84,10 +89,12 @@ public class DefendantChatController extends ChatControllerCentre {
                 basket.setLayoutY(basketY);
               }
             });
+
     discs = Arrays.asList(disc1, disc4, disc3, disc2, disc5);
   }
 
   private void dropDisc(AnchorPane disc) {
+    // Randomly position disc at the top
     double minX = 310;
     double maxX = 650;
     double x = minX + Math.random() * (maxX - minX);
@@ -98,6 +105,7 @@ public class DefendantChatController extends ChatControllerCentre {
   }
 
   private void sendNextDisc() {
+    // Send next disc or end game if all discs have been sent
     discIndex++;
     if (discIndex < discs.size()) {
       dropDisc(discs.get(discIndex));
@@ -116,11 +124,11 @@ public class DefendantChatController extends ChatControllerCentre {
           });
       gameLoop.stop();
       replayButton.setVisible(true);
-      return;
     }
   }
 
   private void startGame() {
+    // Game process
     gameLoop =
         new AnimationTimer() {
           @Override
@@ -155,11 +163,10 @@ public class DefendantChatController extends ChatControllerCentre {
 
   @FXML
   private void onGameStart(ActionEvent event) {
-
+    // Hide button and show instructions
     gameButton.setVisible(false);
     replayButton.setVisible(false);
     instructions.setVisible(true);
-
     PauseTransition pause = new PauseTransition(Duration.seconds(2));
     pause.setOnFinished(
         e -> {

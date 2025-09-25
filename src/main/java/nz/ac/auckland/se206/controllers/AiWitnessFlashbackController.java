@@ -19,9 +19,9 @@ import nz.ac.auckland.se206.TimerManager;
 
 public class AiWitnessFlashbackController extends ChatControllerCentre {
 
-  @FXML private ImageView FlashbackOne;
-  @FXML private ImageView FlashbackTwo;
-  @FXML private ImageView FlashbackThree;
+  @FXML private ImageView flashbackOne;
+  @FXML private ImageView flashbackTwo;
+  @FXML private ImageView flashbackThree;
   @FXML private Button continueButton;
   @FXML private VBox flashbackMessage;
 
@@ -34,15 +34,15 @@ public class AiWitnessFlashbackController extends ChatControllerCentre {
     switch (nextState) {
       case 2:
         // Show second flashback
-        FlashbackOne.setVisible(false);
-        FlashbackTwo.setVisible(true);
-        FlashbackThree.setVisible(false);
+        flashbackOne.setVisible(false);
+        flashbackTwo.setVisible(true);
+        flashbackThree.setVisible(false);
         break;
       case 3:
         // Show third flashback
-        FlashbackOne.setVisible(false);
-        FlashbackTwo.setVisible(false);
-        FlashbackThree.setVisible(true);
+        flashbackOne.setVisible(false);
+        flashbackTwo.setVisible(false);
+        flashbackThree.setVisible(true);
         if (continueButton != null) {
           continueButton.setText("Enter Memory");
         }
@@ -79,28 +79,28 @@ public class AiWitnessFlashbackController extends ChatControllerCentre {
           });
 
       // Initialize flashback UI
-      if (FlashbackOne != null && continueButton != null) {
+      if (flashbackOne != null && continueButton != null) {
         // Get saved state
         int state = AiWitnessStateManager.getInstance().getFlashbackState();
 
         // Set up UI based on saved state
         switch (state) {
           case 1:
-            FlashbackOne.setVisible(true);
-            FlashbackTwo.setVisible(false);
-            FlashbackThree.setVisible(false);
+            flashbackOne.setVisible(true);
+            flashbackTwo.setVisible(false);
+            flashbackThree.setVisible(false);
             continueButton.setText("Continue");
             break;
           case 2:
-            FlashbackOne.setVisible(false);
-            FlashbackTwo.setVisible(true);
-            FlashbackThree.setVisible(false);
+            flashbackOne.setVisible(false);
+            flashbackTwo.setVisible(true);
+            flashbackThree.setVisible(false);
             continueButton.setText("Continue");
             break;
           case 3:
-            FlashbackOne.setVisible(false);
-            FlashbackTwo.setVisible(false);
-            FlashbackThree.setVisible(true);
+            flashbackOne.setVisible(false);
+            flashbackTwo.setVisible(false);
+            flashbackThree.setVisible(true);
             continueButton.setText("Enter Memory");
             break;
         }
