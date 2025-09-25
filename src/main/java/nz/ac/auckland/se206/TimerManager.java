@@ -39,7 +39,7 @@ public class TimerManager {
     }
   }
 
-  private final int totalSeconds = 5;
+  private final int totalSeconds = 300;
   private final IntegerProperty secondsRemaining = new SimpleIntegerProperty(totalSeconds);
   private final DoubleProperty progress = new SimpleDoubleProperty(0);
   private Timeline timeline;
