@@ -14,17 +14,17 @@
   <children>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="599.0" prefWidth="789.0">
    <children>
-      <ImageView fx:id="FlashbackThree" fitHeight="599.0" fitWidth="789.0">
+      <ImageView fx:id="flashbackThree" fitHeight="599.0" fitWidth="789.0">
          <image>
             <Image url="@../images/3.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="FlashbackOne" fitHeight="599.0" fitWidth="850.0" layoutX="-48.0">
+      <ImageView fx:id="flashbackOne" fitHeight="599.0" fitWidth="850.0" layoutX="-48.0">
          <image>
             <Image url="@../images/1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="FlashbackTwo" fitHeight="599.0" fitWidth="789.0" visible="false">
+      <ImageView fx:id="flashbackTwo" fitHeight="599.0" fitWidth="789.0" visible="false">
          <image>
             <Image url="@../images/2.png" />
          </image>

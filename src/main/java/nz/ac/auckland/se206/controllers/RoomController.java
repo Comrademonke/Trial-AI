@@ -39,7 +39,10 @@ public class RoomController {
 
   private static GameStateContext context = new GameStateContext();
   private static boolean isFirstTimeInit = true;
-  private String profession;
+
+  public static void resetTimer() {
+    isFirstTimeInit = true;
+  }
 
   @FXML private Rectangle rectCashier;
   @FXML private Rectangle rectPerson1;
@@ -54,9 +57,7 @@ public class RoomController {
   @FXML private TextField txtInput;
   @FXML private StackPane warningMessage;
 
-  public static void resetTimer() {
-    isFirstTimeInit = true;
-  }
+  private String profession;
 
   /**
    * Initialises the room view. Start's the 2:00 timer and binds it's progress to the progress bar.

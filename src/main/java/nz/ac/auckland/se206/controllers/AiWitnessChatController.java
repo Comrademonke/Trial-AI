@@ -38,9 +38,9 @@ public class AiWitnessChatController extends ChatControllerCentre {
   // Tracks how many times the AI witness has been clicked
   private int aiWitnessClickCount = 0;
   private int flashbackStep = 1;
-  @FXML private ImageView FlashbackOne;
-  @FXML private ImageView FlashbackTwo;
-  @FXML private ImageView FlashbackThree;
+  @FXML private ImageView flashbackOne;
+  @FXML private ImageView flashbackTwo;
+  @FXML private ImageView flashbackThree;
   @FXML private Button continueButton;
 
   /**
@@ -199,15 +199,15 @@ public class AiWitnessChatController extends ChatControllerCentre {
     switch (flashbackStep) {
       case 2:
         // Show second flashback
-        FlashbackOne.setVisible(false);
-        FlashbackTwo.setVisible(true);
-        FlashbackThree.setVisible(false);
+        flashbackOne.setVisible(false);
+        flashbackTwo.setVisible(true);
+        flashbackThree.setVisible(false);
         break;
       case 3:
         // Show third flashback
-        FlashbackOne.setVisible(false);
-        FlashbackTwo.setVisible(false);
-        FlashbackThree.setVisible(true);
+        flashbackOne.setVisible(false);
+        flashbackTwo.setVisible(false);
+        flashbackThree.setVisible(true);
         if (continueButton != null) {
           continueButton.setText("Enter Memory");
         }
@@ -229,11 +229,11 @@ public class AiWitnessChatController extends ChatControllerCentre {
     }
 
     // Initialize flashback UI if we're in the flashback scene
-    if (FlashbackOne != null && continueButton != null) {
+    if (flashbackOne != null && continueButton != null) {
       // Show first flashback, hide others
-      FlashbackOne.setVisible(true);
-      FlashbackTwo.setVisible(false);
-      FlashbackThree.setVisible(false);
+      flashbackOne.setVisible(true);
+      flashbackTwo.setVisible(false);
+      flashbackThree.setVisible(false);
       continueButton.setText("Continue");
       flashbackStep = 1;
     }
@@ -490,14 +490,30 @@ public class AiWitnessChatController extends ChatControllerCentre {
 
   private int getBubbleNumber(ImageView bubble) {
     // Mapping based on order of appearance in showSpeechBubble method
-    if (bubble == speechBubble2) return 1; // First visible
-    if (bubble == speechBubble1) return 2; // Second visible
-    if (bubble == speechBubble7) return 3; // Third visible
-    if (bubble == speechBubble4) return 4; // Fourth visible
-    if (bubble == speechBubble8) return 5; // Fifth visible
-    if (bubble == speechBubble5) return 6; // Sixth visible
-    if (bubble == speechBubble9) return 7; // Seventh visible
-    if (bubble == speechBubble6) return 8; // Eighth visible
+    if (bubble == speechBubble2) {
+      return 1;
+    } // First visible
+    if (bubble == speechBubble1) {
+      return 2;
+    } // Second visible
+    if (bubble == speechBubble7) {
+      return 3;
+    } // Third visible
+    if (bubble == speechBubble4) {
+      return 4;
+    } // Fourth visible
+    if (bubble == speechBubble8) {
+      return 5;
+    } // Fifth visible
+    if (bubble == speechBubble5) {
+      return 6;
+    } // Sixth visible
+    if (bubble == speechBubble9) {
+      return 7;
+    } // Seventh visible
+    if (bubble == speechBubble6) {
+      return 8;
+    } // Eighth visible
     return -1;
   }
 

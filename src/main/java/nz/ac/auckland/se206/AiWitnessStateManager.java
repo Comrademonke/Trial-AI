@@ -10,18 +10,6 @@ import java.util.List;
 public class AiWitnessStateManager {
   private static AiWitnessStateManager instance;
 
-  // Scene state
-  private double sliderValue = 0;
-  private final List<Integer> disposedBubbles = new ArrayList<>();
-  private boolean hasClickedClearNoise = false;
-  private boolean hasShownAllBubbles = false;
-  private int currentFlashbackState = 1;
-  private boolean isEndLabelVisible = false;
-
-  private AiWitnessStateManager() {
-    // Private constructor for singleton
-  }
-
   /**
    * Gets the singleton instance of the state manager.
    *
@@ -32,6 +20,18 @@ public class AiWitnessStateManager {
       instance = new AiWitnessStateManager();
     }
     return instance;
+  }
+
+  // Scene state
+  private double sliderValue = 0;
+  private final List<Integer> disposedBubbles = new ArrayList<>();
+  private boolean hasClickedClearNoise = false;
+  private boolean hasShownAllBubbles = false;
+  private int currentFlashbackState = 1;
+  private boolean isEndLabelVisible = false;
+
+  private AiWitnessStateManager() {
+    // Private constructor for singleton
   }
 
   /**
