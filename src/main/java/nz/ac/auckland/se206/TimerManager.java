@@ -39,7 +39,7 @@ public class TimerManager {
     }
   }
 
-  private final int totalSeconds = 300;
+  private final int totalSeconds = 5;
   private final IntegerProperty secondsRemaining = new SimpleIntegerProperty(totalSeconds);
   private final DoubleProperty progress = new SimpleDoubleProperty(0);
   private Timeline timeline;
@@ -47,7 +47,7 @@ public class TimerManager {
   private TimerManager() {}
 
   public void start() {
-    // Starts 2:00 timer
+    // Starts 5:00 timer
     if (timeline != null && timeline.getStatus() == Animation.Status.RUNNING) {
       return;
     }
@@ -65,6 +65,7 @@ public class TimerManager {
                     timeline.stop();
                     try {
                       App.openFinalPage();
+                      App.setTalkedToAll(true);
                     } catch (IOException e1) {
                       e1.printStackTrace();
                     }
