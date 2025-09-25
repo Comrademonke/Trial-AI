@@ -15,6 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
+import nz.ac.auckland.se206.AiWitnessStateManager;
 import nz.ac.auckland.se206.App;
 import nz.ac.auckland.se206.GameStateContext;
 import nz.ac.auckland.se206.TimerManager;
@@ -30,6 +31,9 @@ public class RoomController extends ChatControllerCentre {
 
   public static void resetTimer() {
     isFirstTimeInit = true;
+
+    // Reset AI witness state so flashback and memory work properly on restart
+    AiWitnessStateManager.getInstance().resetState();
   }
 
   @FXML private Rectangle rectCashier;

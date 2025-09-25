@@ -56,7 +56,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
   @FXML private TextArea chatTextArea;
 
   private int aiWitnessClickCount = 0;
-  private int flashbackStep = 1;
+  private int flashbackStep = 0;
   private final Map<ImageView, Label> speechBubbleLabels = new HashMap<>();
   private Label instructionLabel;
   private Label completionLabel;
@@ -189,13 +189,14 @@ public class AiWitnessChatController extends ChatControllerCentre {
   private void onContinueFlashback() {
     flashbackStep++;
     switch (flashbackStep) {
-      case 2:
+      case 1:
         // Show second flashback
         flashbackOne.setVisible(false);
         flashbackTwo.setVisible(true);
         flashbackThree.setVisible(false);
+        continueButton.setText("Continue");
         break;
-      case 3:
+      case 2:
         // Show third flashback
         flashbackOne.setVisible(false);
         flashbackTwo.setVisible(false);
@@ -220,6 +221,9 @@ public class AiWitnessChatController extends ChatControllerCentre {
       e.printStackTrace();
     }
 
+    // Reset click count so flashback shows properly on restart
+    aiWitnessClickCount = 0;
+
     // Initialize flashback UI if we're in the flashback scene
     if (flashbackOne != null && continueButton != null) {
       // Show first flashback, hide others
@@ -227,7 +231,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
       flashbackTwo.setVisible(false);
       flashbackThree.setVisible(false);
       continueButton.setText("Continue");
-      flashbackStep = 1;
+      flashbackStep = 0;
     }
 
     flashbackMessage.setVisible(true);
