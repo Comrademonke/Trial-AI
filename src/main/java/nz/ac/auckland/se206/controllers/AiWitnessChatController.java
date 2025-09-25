@@ -45,16 +45,12 @@ public class AiWitnessChatController extends ChatControllerCentre {
   @FXML private VBox flashbackMessage;
   @FXML private ImageView speechBubble1;
   @FXML private ImageView speechBubble2;
-  // @FXML private ImageView speechBubble3;
   @FXML private ImageView speechBubble4;
   @FXML private ImageView speechBubble5;
   @FXML private ImageView speechBubble6;
   @FXML private ImageView speechBubble7;
   @FXML private ImageView speechBubble8;
   @FXML private ImageView speechBubble9;
-  // @FXML private ImageView speechBubble10;
-  // @FXML private ImageView speechBubble11;
-  // @FXML private ImageView speechBubble12;
   @FXML private Button clearNoiseBtn;
   @FXML private ImageView rumourBin;
   @FXML private TextArea chatTextArea;
@@ -368,16 +364,12 @@ public class AiWitnessChatController extends ChatControllerCentre {
   private void hideAllSpeechBubbles() {
     speechBubble1.setVisible(false);
     speechBubble2.setVisible(false);
-    // speechBubble3.setVisible(false);
     speechBubble4.setVisible(false);
     speechBubble5.setVisible(false);
     speechBubble6.setVisible(false);
     speechBubble7.setVisible(false);
     speechBubble8.setVisible(false);
     speechBubble9.setVisible(false);
-    // speechBubble10.setVisible(false);
-    // speechBubble11.setVisible(false);
-    // speechBubble12.setVisible(false);
 
     // Hide all labels
     for (Label label : speechBubbleLabels.values()) {
@@ -414,7 +406,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
     bubble.setLayoutX(0);
     bubble.setLayoutY(0);
 
-    label.setVisible(false); // Always start hidden
+    label.setVisible(false);
     speechBubbleLabels.put(bubble, label);
   }
 
@@ -426,13 +418,8 @@ public class AiWitnessChatController extends ChatControllerCentre {
         speechBubble4, "I thought I heard something about consent, but not sure.");
     addTextToSpeechBubble(speechBubble8, "Either way, musicians are upset.");
     addTextToSpeechBubble(speechBubble5, "They think their styles were copied.");
-    // addTextToSpeechBubble(speechBubble3, "It sounds like the AI just stole the music.");
     addTextToSpeechBubble(speechBubble9, "I don’t know... inspiration isn’t the same as stealing.");
-    // addTextToSpeechBubble(speechBubble10, "But everyone keeps calling it unethical.");
     addTextToSpeechBubble(speechBubble6, "Rumours spread so quickly about this stuff.");
-    //   addTextToSpeechBubble(speechBubble11, "Hard to tell what’s true anymore...");
-    //   addTextToSpeechBubble(
-    //       speechBubble12, "Still, people say the whole story is clear — the AI crossed a line.");
   }
 
   private void showSpeechBubble(int value) {
@@ -455,19 +442,13 @@ public class AiWitnessChatController extends ChatControllerCentre {
     if (value >= 7) {
       showBubbleWithText(speechBubble5);
     }
-    // if (value >= 8) {
-    //   showBubbleWithText(speechBubble3);
-    // }
     if (value >= 9) {
       showBubbleWithText(speechBubble9);
-      // showBubbleWithText(speechBubble10);
     }
     if (value >= 10) {
       showBubbleWithText(speechBubble6);
-      // showBubbleWithText(speechBubble11);
     }
     if (value >= 11) {
-      // showBubbleWithText(speechBubble12);
       // Only show clear button if it hasn't been clicked yet
       clearNoiseBtn.setVisible(!AiWitnessStateManager.getInstance().hasClickedClearNoise());
       slider.setVisible(false);
@@ -490,28 +471,28 @@ public class AiWitnessChatController extends ChatControllerCentre {
     // Mapping based on order of appearance in showSpeechBubble method
     if (bubble == speechBubble2) {
       return 1;
-    } // First visible
+    }
     if (bubble == speechBubble1) {
       return 2;
-    } // Second visible
+    }
     if (bubble == speechBubble7) {
       return 3;
-    } // Third visible
+    }
     if (bubble == speechBubble4) {
       return 4;
-    } // Fourth visible
+    }
     if (bubble == speechBubble8) {
       return 5;
-    } // Fifth visible
+    }
     if (bubble == speechBubble5) {
       return 6;
-    } // Sixth visible
+    }
     if (bubble == speechBubble9) {
       return 7;
-    } // Seventh visible
+    }
     if (bubble == speechBubble6) {
       return 8;
-    } // Eighth visible
+    }
     return -1;
   }
 

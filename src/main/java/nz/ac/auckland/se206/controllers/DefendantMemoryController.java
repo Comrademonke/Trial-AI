@@ -20,7 +20,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
-import nz.ac.auckland.se206.TimerManager;
 
 public class DefendantMemoryController extends ChatControllerCentre {
 
@@ -40,19 +39,24 @@ public class DefendantMemoryController extends ChatControllerCentre {
   @FXML private ImageView image1;
   @FXML private ImageView image2;
   @FXML private Button proceedButton;
-  @FXML private VBox memoryMessage;
+  @FXML private VBox flashbackMessage;
 
   @Override
   @FXML
   public void initialize() throws ApiProxyException {
+    // Initialises Timer
     try {
       super.initialize();
     } catch (ApiProxyException e) {
       e.printStackTrace();
     }
-
+    // Plays audio + shows message
+    flashbackMessage.setVisible(true);
     Platform.runLater(
         () -> {
+          PauseTransition pause = new PauseTransition(Duration.seconds(1));
+          pause.setOnFinished(e -> flashbackMessage.setVisible(false));
+          pause.play();
           String audioFile = "src/main/resources/sounds/flashback.mp3";
 
           Media sound = new Media(new File(audioFile).toURI().toString());
@@ -61,22 +65,17 @@ public class DefendantMemoryController extends ChatControllerCentre {
           mediaPlayer.play();
         });
 
+    // Initialises progress bar
     slidingBar
         .valueProperty()
         .addListener(
             (obs, oldVal, newVal) -> {
               showDialogue(newVal.intValue());
             });
-    memoryMessage.setVisible(true);
-    Platform.runLater(
-        () -> {
-          PauseTransition pause = new PauseTransition(Duration.seconds(1));
-          pause.setOnFinished(e -> memoryMessage.setVisible(false));
-          pause.play();
-        });
   }
 
   private void showDialogue(int value) {
+    // Initially, hide all speech bubbles
     scene1.setVisible(false);
     scene2.setVisible(false);
     scene3.setVisible(false);
@@ -90,6 +89,7 @@ public class DefendantMemoryController extends ChatControllerCentre {
     image1.setVisible(false);
     proceedButton.setVisible(false);
 
+    // Show or hide speech bubbles based on slider value
     switch (value) {
       case 0:
         image1.setVisible(true);
@@ -147,14 +147,8 @@ public class DefendantMemoryController extends ChatControllerCentre {
     }
   }
 
-  private void applyColor(double progress) {
-    // Progress bar changes colour depending on the time
-    String color = TimerManager.getAccentColor(progress);
-    progressBar.setStyle("-fx-accent: " + color + ";");
-  }
-
   /**
-   * Navigates back to the previous view.
+   * Navigates to chat room view.
    *
    * @param event the action event triggered by the go back button
    * @throws ApiProxyException if there is an error communicating with the API proxy
