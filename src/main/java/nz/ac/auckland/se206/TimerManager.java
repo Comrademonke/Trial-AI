@@ -39,7 +39,7 @@ public class TimerManager {
     }
   }
 
-  private final int totalSeconds = 20;
+  private final int totalSeconds = 300;
   private IntegerProperty secondsRemaining;
   private final DoubleProperty progress = new SimpleDoubleProperty(0);
   private Timeline timeline;
@@ -53,6 +53,7 @@ public class TimerManager {
       return;
     }
 
+    // Resets timer when new game begins
     secondsRemaining = new SimpleIntegerProperty(totalSeconds);
 
     timeline =
@@ -64,6 +65,7 @@ public class TimerManager {
                   secondsRemaining.set(remaining);
                   progress.set((double) (totalSeconds - remaining) / totalSeconds);
 
+                  // If timer runs out
                   if (remaining <= 0) {
                     timeline.stop();
                     try {
