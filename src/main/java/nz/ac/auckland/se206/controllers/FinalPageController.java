@@ -320,7 +320,6 @@ public class FinalPageController {
   private void onResetGame(ActionEvent event) throws ApiProxyException, IOException {
     ChatStorage.resetAllChats();
     RoomController.resetTimer();
-    // TimerManager.resetTimer();
 
     // Reset AI witness state so flashback and memory work properly on restart
     AiWitnessStateManager.getInstance().resetState();
