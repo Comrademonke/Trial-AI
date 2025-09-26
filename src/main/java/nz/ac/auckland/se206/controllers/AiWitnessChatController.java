@@ -115,13 +115,10 @@ public class AiWitnessChatController extends ChatControllerCentre {
    */
   private void logAction(String action) {
     playerActions.add(action);
-    System.out.println("Player action: " + action);
 
     if (action.startsWith("Disposed:")) {
       // Get the updated count after the bubble was just disposed
       AiWitnessStateManager stateManager = AiWitnessStateManager.getInstance();
-      int bubblesInBin = stateManager.getBubblesInBin();
-      System.out.println("Bubbles in bin: " + (bubblesInBin + 1) + "/8");
 
       // Check if all speech bubbles have been disposed
       if (stateManager.getBubblesInBin() == 7) {

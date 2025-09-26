@@ -387,7 +387,6 @@ public class FinalPageController {
     ChatCompletionResult result = request.execute();
     Choice choice = result.getChoices().iterator().next();
     ChatMessage response = choice.getChatMessage();
-    System.out.println(response.getContent());
 
     // Returns true for correct rationale
     return response.getContent().trim().equalsIgnoreCase("CORRECT");
