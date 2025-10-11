@@ -13,11 +13,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane stylesheets="@../css/defendantChat.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.DefendantChatController" onKeyPressed="#sendMessage">
+<StackPane onKeyPressed="#sendMessage" stylesheets="@../css/defendantChat.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nz.ac.auckland.se206.controllers.DefendantChatController">
   <children>
     <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="789.0" prefWidth="1100.0">
       <children>
-        <ImageView fitHeight="902.0" fitWidth="835.0" layoutX="-12.0" layoutY="-280.0" preserveRatio="true">
+        <ImageView fitHeight="1254.0" fitWidth="1178.0" layoutX="-37.0" layoutY="-378.0" preserveRatio="true">
           <image>
             <Image url="@../images/music.jpg" />
           </image>
@@ -77,26 +77,26 @@
             <Image url="@../images/basket.png" />
           </image>
         </ImageView>
-        <TextArea fx:id="txtaChat" editable="false" layoutX="20.0" layoutY="230.0" opacity="0.83" prefHeight="299.0" prefWidth="223.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" wrapText="true" />
-        <TextField fx:id="txtInput" layoutX="20.0" layoutY="545.0" opacity="0.83" prefHeight="26.0" prefWidth="223.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" />
-        <Button fx:id="btnSend" layoutX="251.0" layoutY="540.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
+        <TextArea fx:id="txtaChat" editable="false" layoutX="24.0" layoutY="277.0" opacity="0.83" prefHeight="432.0" prefWidth="304.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" wrapText="true" />
+        <TextField fx:id="txtInput" layoutX="23.0" layoutY="729.0" opacity="0.83" prefHeight="26.0" prefWidth="304.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" />
+        <Button fx:id="btnSend" layoutX="341.0" layoutY="725.0" mnemonicParsing="false" onAction="#onSendMessage" text="Send" />
         <Button layoutX="25.0" layoutY="29.0" mnemonicParsing="false" onAction="#onGoBack" prefHeight="52.0" prefWidth="130.0" text="Go Back" />
-          <Label fx:id="timer" layoutX="639.0" layoutY="23.0" prefHeight="63.0" prefWidth="155.0" text="5:00" textFill="WHITE">
+          <Label fx:id="timer" layoutX="941.0" layoutY="24.0" prefHeight="63.0" prefWidth="155.0" text="5:00" textFill="WHITE">
             <font>
               <Font size="50.0" />
             </font></Label>
-        <ProgressBar fx:id="progressBar" layoutX="-1.0" layoutY="104.0" prefHeight="20.0" prefWidth="790.0" progress="0.0" />
-        <Label layoutX="224.0" layoutY="33.0" style="-fx-background-color: #000;" text="Chat with the defendant, play the mini-game" textFill="WHITE">
+        <ProgressBar fx:id="progressBar" layoutX="-1.0" layoutY="132.0" prefHeight="26.0" prefWidth="1108.0" progress="0.0" />
+        <Label layoutX="392.0" layoutY="34.0" style="-fx-background-color: #000;" text="Chat with the defendant, play the mini-game" textFill="WHITE">
           <font>
             <Font size="20.0" />
           </font>
         </Label>
-        <Label layoutX="277.0" layoutY="59.0" style="-fx-background-color: #000;" text="and find out about it's perspective." textFill="WHITE">
+        <Label layoutX="435.0" layoutY="59.0" style="-fx-background-color: #000;" text="and find out about it's perspective." textFill="WHITE">
           <font>
             <Font size="20.0" />
           </font>
         </Label>
-            <Button fx:id="gameButton" layoutX="448.0" layoutY="337.0" mnemonicParsing="false" onAction="#onGameStart" prefHeight="64.0" prefWidth="187.0" text="Click to Start Game" />
+            <Button fx:id="gameButton" layoutX="635.0" layoutY="435.0" mnemonicParsing="false" onAction="#onGameStart" prefHeight="64.0" prefWidth="187.0" text="Click to Start Game" />
             <Button fx:id="replayButton" layoutX="448.0" layoutY="337.0" mnemonicParsing="false" onAction="#onGameStart" prefHeight="64.0" prefWidth="187.0" text="Replay the Game" visible="false" />
             <AnchorPane fx:id="messageBox" layoutX="328.0" layoutY="276.0" prefHeight="187.0" prefWidth="401.0" style="-fx-background-color: #000;" visible="false">
                <children>
