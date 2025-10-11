@@ -18,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest;
 import nz.ac.auckland.apiproxy.chat.openai.ChatCompletionRequest.Model;
@@ -54,12 +55,14 @@ public class AiWitnessChatController extends ChatControllerCentre {
   @FXML private Button clearNoiseBtn;
   @FXML private ImageView rumourBin;
   @FXML private TextArea chatTextArea;
+  @FXML private TextFlow StartLabelText;
 
   private int aiWitnessClickCount = 0;
   private int flashbackStep = 0;
   private final Map<ImageView, Label> speechBubbleLabels = new HashMap<>();
   private Label instructionLabel;
   private Label completionLabel;
+  private Label sliderInstructionLabel;
   private List<String> playerActions = new ArrayList<>();
 
   /**
@@ -296,6 +299,11 @@ public class AiWitnessChatController extends ChatControllerCentre {
       slider.setValue(sliderValue);
       // Show bubbles up to the saved slider value
       showSpeechBubble((int) sliderValue);
+
+      // Show slider instruction if user hasn't started sliding yet
+      if (sliderValue == 0) {
+        showSliderInstruction();
+      }
     }
 
     // Restore disposed bubbles
@@ -317,14 +325,46 @@ public class AiWitnessChatController extends ChatControllerCentre {
     }
 
     // Create and style the instruction label
-    instructionLabel = new Label("Drag the rumours into the bin");
+    instructionLabel = new Label("Drag the speech bubbles into the bin");
     instructionLabel.setStyle(
-        "-fx-font-size: 50px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7);"
+        "-fx-font-size: 43px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7);"
             + " -fx-padding: 10px;");
     instructionLabel.setLayoutX(50); // Center horizontally
     instructionLabel.setLayoutY(200); // Position near top
     instructionLabel.setVisible(false);
     ((AnchorPane) slider.getParent()).getChildren().add(instructionLabel);
+
+    // Create and style the slider instruction label
+    sliderInstructionLabel = new Label("To start the interactable slide the slider");
+    sliderInstructionLabel.setStyle(
+        "-fx-font-size: 35px; -fx-text-fill: white; -fx-background-color: rgba(0, 0, 0, 0.7);"
+            + " -fx-padding: 10px; -fx-background-radius: 5px;");
+    sliderInstructionLabel.setWrapText(true);
+
+    // Position the label to fit completely within the TextFlow area
+    if (StartLabelText != null && StartLabelText.getParent() instanceof AnchorPane) {
+      AnchorPane parent = (AnchorPane) StartLabelText.getParent();
+
+      // Match the TextFlow's exact position and dimensions
+      sliderInstructionLabel.setLayoutX(StartLabelText.getLayoutX());
+      sliderInstructionLabel.setLayoutY(StartLabelText.getLayoutY());
+
+      // Make the label fit completely within the TextFlow dimensions
+      sliderInstructionLabel.setPrefWidth(StartLabelText.getPrefWidth());
+      sliderInstructionLabel.setPrefHeight(StartLabelText.getPrefHeight());
+      sliderInstructionLabel.setMaxWidth(StartLabelText.getPrefWidth());
+      sliderInstructionLabel.setMaxHeight(StartLabelText.getPrefHeight());
+
+      sliderInstructionLabel.setAlignment(Pos.CENTER);
+      parent.getChildren().add(sliderInstructionLabel);
+    }
+
+    sliderInstructionLabel.setVisible(false);
+
+    // Show slider instruction if user hasn't started sliding yet
+    if (!state.hasShownAllBubbles() && state.getSliderValue() == 0) {
+      showSliderInstruction();
+    }
 
     // Create and style the completion label
     completionLabel = new Label("The AI witness testimony is unreliable and based on rumours.");
@@ -349,6 +389,10 @@ public class AiWitnessChatController extends ChatControllerCentre {
         .valueProperty()
         .addListener(
             (obs, oldVal, newVal) -> {
+              // Hide slider instruction when user starts using slider
+              if (newVal.intValue() > 0 && sliderInstructionLabel.isVisible()) {
+                sliderInstructionLabel.setVisible(false);
+              }
               showSpeechBubble(newVal.intValue());
             });
 
@@ -466,6 +510,16 @@ public class AiWitnessChatController extends ChatControllerCentre {
     Label label = speechBubbleLabels.get(bubble);
     if (label != null) {
       label.setVisible(true);
+    }
+  }
+
+  /** Shows the slider instruction label when user first enters memory scene. */
+  private void showSliderInstruction() {
+    sliderInstructionLabel.setVisible(true);
+
+    // Make sure it's on top
+    if (sliderInstructionLabel.getParent() != null) {
+      sliderInstructionLabel.toFront();
     }
   }
 
