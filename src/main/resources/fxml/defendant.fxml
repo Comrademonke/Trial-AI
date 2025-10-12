@@ -85,7 +85,7 @@
             <font>
               <Font size="50.0" />
             </font></Label>
-        <ProgressBar fx:id="progressBar" layoutX="-1.0" layoutY="132.0" prefHeight="26.0" prefWidth="1108.0" progress="0.0" />
+        <ProgressBar fx:id="progressBar" layoutY="158.0" prefHeight="26.0" prefWidth="1100.0" progress="0.0" />
         <Label layoutX="353.0" layoutY="32.0" style="-fx-background-color: #000;" text="Chat with the defendant, play the mini-game" textFill="WHITE">
           <font>
             <Font name="Futura Bold" size="20.0" />
