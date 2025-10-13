@@ -46,10 +46,10 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   private Image image8 = new Image(getClass().getResourceAsStream("/images/eggs.jpg"));
 
   private boolean isLocked = false;
-  private double initialAreaX = 589;
-  private double initialAreaY = 286;
-  private double targetAreaX = 374;
-  private double targetAreaY = 454;
+  private double initialAreaX = 587;
+  private double initialAreaY = 343;
+  private double targetAreaX = 804;
+  private double targetAreaY = 604;
   private double targetAreaSize = 200;
 
   @FXML private TextArea txtaChat;

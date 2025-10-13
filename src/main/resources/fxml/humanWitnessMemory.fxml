@@ -24,7 +24,7 @@
             <Image url="@../images/musicStudioBackground.jpg" />
           </image>
         </ImageView>
-            <Label layoutX="387.0" layoutY="196.0" prefHeight="138.0" prefWidth="697.0" style="-fx-background-color: black;" />
+            <Label layoutX="387.0" layoutY="195.0" prefHeight="138.0" prefWidth="633.0" style="-fx-background-color: black;" />
             <ImageView fitHeight="171.0" fitWidth="378.0" layoutX="-3.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/titleBackground.png" />
@@ -45,15 +45,18 @@
                   <Image url="@../images/titleBackground.png" />
                </image>
             </ImageView>
-        <TextArea fx:id="txtaChat" editable="false" layoutX="24.0" layoutY="277.0" opacity="0.83" prefHeight="432.0" prefWidth="304.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" wrapText="true" />
-            <ImageView fitHeight="294.0" fitWidth="418.0" layoutX="406.0" layoutY="480.0" pickOnBounds="true" preserveRatio="true">
+        <TextArea fx:id="txtaChat" editable="false" layoutX="13.0" layoutY="270.0" opacity="0.83" prefHeight="463.0" prefWidth="356.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" wrapText="true" />
+            <ImageView fitHeight="294.0" fitWidth="418.0" layoutX="733.0" layoutY="483.0" pickOnBounds="true" preserveRatio="true" scaleX="1.1" scaleY="1.1" scaleZ="1.1">
                <image>
                   <Image url="@../images/aICasetteTape.png" />
                </image>
             </ImageView>
-            <Label fx:id="robotTextDisplay" alignment="CENTER" layoutX="528.0" layoutY="523.0" prefHeight="64.0" prefWidth="156.0" style="-fx-background-color: white;" text="     Choose Song to&#10;⬇Insert beats below⬇" textFill="RED" />
-        <TextField fx:id="txtInput" layoutX="23.0" layoutY="729.0" opacity="0.83" prefHeight="26.0" prefWidth="304.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" />
-        <Button fx:id="btnSend" layoutX="341.0" layoutY="725.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="30.0" prefWidth="51.0" text="Send">
+            <Label fx:id="robotTextDisplay" alignment="CENTER" layoutX="850.0" layoutY="519.0" prefHeight="66.0" prefWidth="166.0" style="-fx-background-color: white;" text="     Choose Song to&#10;⬇Insert beats below⬇" textFill="RED">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+        <TextField fx:id="txtInput" layoutX="12.0" layoutY="741.0" opacity="0.83" prefHeight="35.0" prefWidth="356.0" style="-fx-control-inner-background: black; -fx-text-fill: #39FF14;" />
+        <Button fx:id="btnSend" layoutX="373.0" layoutY="743.0" mnemonicParsing="false" onAction="#onSendMessage" prefHeight="30.0" prefWidth="51.0" text="Send">
                <font>
                   <Font size="14.0" />
                </font></Button>
@@ -86,7 +89,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="songLabel" alignment="CENTER" layoutX="534.0" layoutY="200.0" prefHeight="46.0" prefWidth="542.0" style="-fx-background-color: black; -fx-background-radius: 10;" textFill="WHITE">
+            <Label fx:id="songLabel" alignment="CENTER" layoutX="534.0" layoutY="200.0" prefHeight="46.0" prefWidth="472.0" style="-fx-background-color: black; -fx-background-radius: 10;" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
@@ -118,7 +121,7 @@
                   </InnerShadow>
                </effect>
             </ImageView>
-        <ImageView fx:id="cassetteTape" disable="true" fitHeight="116.0" fitWidth="274.0" layoutX="733.0" layoutY="439.0" preserveRatio="true">
+        <ImageView fx:id="cassetteTape" disable="true" fitHeight="126.0" fitWidth="270.0" layoutX="587.0" layoutY="343.0" preserveRatio="true" scaleX="1.13" scaleY="1.13" scaleZ="1.13">
           <image>
             <Image url="@../images/cassetteTape.png" />
           </image>
@@ -126,12 +129,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
         </ImageView>
-            <ImageView fx:id="rotatingCassetteTape" fitHeight="21.0" fitWidth="33.0" layoutX="568.0" layoutY="641.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="rotatingCassetteTape" fitHeight="20.0" fitWidth="24.0" layoutX="894.0" layoutY="650.0" pickOnBounds="true" preserveRatio="true" scaleX="1.1" scaleY="1.1" scaleZ="1.1">
                <image>
                   <Image url="@../images/cassetteSpinning.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="rotatingCassetteTape1" fitHeight="24.0" fitWidth="24.0" layoutX="630.0" layoutY="639.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="rotatingCassetteTape1" fitHeight="22.0" fitWidth="22.0" layoutX="966.0" layoutY="649.0" pickOnBounds="true" preserveRatio="true" scaleX="1.1" scaleY="1.1" scaleZ="1.1">
                <image>
                   <Image url="@../images/cassetteSpinning.png" />
                </image>
