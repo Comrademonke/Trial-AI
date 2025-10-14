@@ -1,7 +1,6 @@
 package nz.ac.auckland.se206.controllers;
 
 import java.io.IOException;
-import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
@@ -11,9 +10,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import nz.ac.auckland.apiproxy.exceptions.ApiProxyException;
 import nz.ac.auckland.se206.App;
@@ -25,33 +26,26 @@ import nz.ac.auckland.se206.DraggableMaker;
  */
 public class HumanWitnessMemoryController extends ChatControllerCentre {
 
-  private int currentSongIndex = 0;
-  private String[] songs = {
-    "HUMBLE - Kendrick Llama",
-    "Blinding Lights - The Weekday",
-    "Yellow - Hotplay",
-    "Rap god - Skittles",
-    "Believer - Imagine Slightly Larger Lizards",
-    "Old Town Road - Lil Nas Y",
-    "Do I Wanna Know? - Arctic Gorillas",
-    "Smoke Weed Everyday - Snoop Catt"
-  };
-  private Image image1 = new Image(getClass().getResourceAsStream("/images/carRadio.jpg"));
-  private Image image2 = new Image(getClass().getResourceAsStream("/images/cityLights.jpg"));
-  private Image image3 = new Image(getClass().getResourceAsStream("/images/catSleeping.jpg"));
-  private Image image4 = new Image(getClass().getResourceAsStream("/images/coffeeMug.jpg"));
-  private Image image5 = new Image(getClass().getResourceAsStream("/images/concert.jpg"));
-  private Image image6 = new Image(getClass().getResourceAsStream("/images/deers.jpg"));
-  private Image image7 = new Image(getClass().getResourceAsStream("/images/ocean.jpg"));
-  private Image image8 = new Image(getClass().getResourceAsStream("/images/eggs.jpg"));
+  private final int rows = 3;
+  private final int cols = 5;
+  private final Rectangle[][] cells = new Rectangle[rows][cols];
+  private final boolean[][] pattern = new boolean[rows][cols];
 
+  private final boolean[][] correctPattern = {
+    {true, false, true, false, true},
+    {false, true, false, true, false},
+    {true, false, true, false, true}
+  };
+
+  private boolean isPatternCorrect = false;
   private boolean isLocked = false;
-  private double initialAreaX = 587;
-  private double initialAreaY = 343;
-  private double targetAreaX = 804;
-  private double targetAreaY = 604;
+  private double initialAreaX = 415;
+  private double initialAreaY = 614;
+  private double targetAreaX = 864;
+  private double targetAreaY = 643;
   private double targetAreaSize = 200;
 
+  @FXML private GridPane beatGrid;
   @FXML private TextArea txtaChat;
   @FXML private Label timer;
   @FXML private ImageView cassetteTape;
@@ -73,6 +67,8 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
       e.printStackTrace();
     }
 
+    createBeatGrid();
+
     robotTextDisplay.setText("     Choose Song to\r\n" + "⬇Insert beats below⬇");
 
     // Disable and turn visibility off the cassette tape
@@ -80,12 +76,6 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
     cassetteTape.setDisable(true);
     rotatingCassetteTape.setVisible(false);
     rotatingCassetteTape1.setVisible(false);
-
-    // Set initial song
-    songLabel.setText(songs[currentSongIndex]);
-
-    // Set initial cover image
-    musicCover.setImage(image1);
 
     // Display flashback message at the beginning
     flashbackMessage.setVisible(true);
@@ -167,6 +157,77 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
     pauseText2.play();
   }
 
+  private void createBeatGrid() {
+    // Get size of cell
+    double cellWidth = beatGrid.getPrefWidth() / cols;
+    double cellHeight = beatGrid.getPrefHeight() / rows;
+
+    // Set up rectangles
+    for (int currentRow = 0; currentRow < rows; currentRow++) {
+      for (int currentColumn = 0; currentColumn < cols; currentColumn++) {
+        // Create new rectangle
+        Rectangle rectangle = new Rectangle(cellWidth - 2, cellHeight - 2, Color.WHITE);
+        rectangle.setArcWidth(1);
+        rectangle.setArcHeight(1);
+        rectangle.setStroke(Color.BLACK);
+        rectangle.setStrokeWidth(2);
+
+        final int row = currentRow;
+        final int col = currentColumn;
+
+        // Check if rectangle is active
+        rectangle.setOnMouseClicked(
+            e -> {
+              if (!isPatternCorrect) {
+                boolean isActiveCell = pattern[row][col];
+                pattern[row][col] = !isActiveCell;
+                if (!isActiveCell) {
+                  rectangle.setFill(getRowColor(row));
+                } else {
+                  rectangle.setFill(Color.WHITE);
+                }
+                checkPattern();
+              }
+            });
+
+        cells[currentRow][currentColumn] = rectangle;
+        beatGrid.add(rectangle, currentColumn, currentRow);
+      }
+    }
+  }
+
+  private Color getRowColor(int row) {
+    // Sets colour of rectangle based off row
+    switch (row) {
+      case 0:
+        return Color.web("#fd0000ff");
+      case 1:
+        return Color.web("#001affff");
+      case 2:
+        return Color.web("#04ff00ff");
+      default:
+        return Color.LIMEGREEN;
+    }
+  }
+
+  private void checkPattern() {
+    // Checks for the winning pattern
+    for (int row = 0; row < rows; row++) {
+      for (int col = 0; col < cols; col++) {
+        if (pattern[row][col] != correctPattern[row][col]) {
+          isPatternCorrect = false;
+          return;
+        }
+      }
+    }
+    isPatternCorrect = true;
+    onPatternCorrect();
+  }
+
+  private void onPatternCorrect() {
+    onTurnOnCassetteTape();
+  }
+
   private void rotateCasetteTape() {
     // Enable visibility of casette tapes
     rotatingCassetteTape.setVisible(true);
@@ -198,96 +259,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   }
 
   @FXML
-  private void onGoToNextSong() {
-    // Fade transitions
-    FadeTransition fadeOut = new FadeTransition(Duration.millis(300), songLabel);
-    fadeOut.setFromValue(1.0);
-    fadeOut.setToValue(0.0);
-
-    FadeTransition fadeIn = new FadeTransition(Duration.millis(300), songLabel);
-    fadeIn.setFromValue(0.0);
-    fadeIn.setToValue(1.0);
-
-    // Play animation
-    fadeOut.setOnFinished(
-        e -> {
-          // Update label
-          currentSongIndex = (currentSongIndex + 1) % songs.length;
-          setImageCover(currentSongIndex);
-          songLabel.setText(songs[currentSongIndex]);
-          fadeIn.play();
-        });
-
-    fadeOut.play();
-  }
-
-  @FXML
-  private void onGoToPreviousSong() {
-    // Fade transitions
-    FadeTransition fadeOut = new FadeTransition(Duration.millis(300), songLabel);
-    fadeOut.setFromValue(1.0);
-    fadeOut.setToValue(0.0);
-
-    FadeTransition fadeIn = new FadeTransition(Duration.millis(300), songLabel);
-    fadeIn.setFromValue(0.0);
-    fadeIn.setToValue(1.0);
-
-    // Play animation
-    fadeOut.setOnFinished(
-        e -> {
-          // Update label
-          currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-          setImageCover(currentSongIndex);
-          songLabel.setText(songs[currentSongIndex]);
-          fadeIn.play();
-        });
-
-    fadeOut.play();
-  }
-
-  @FXML
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
     App.setRoot("room");
-  }
-
-  @FXML
-  private void onlightUpPreviousButton() {
-    playPreviousSongButton.setOpacity(1);
-  }
-
-  @FXML
-  private void onlightDownPreviousButton() {
-    playPreviousSongButton.setOpacity(0.7);
-  }
-
-  @FXML
-  private void onlightUpNextButton() {
-    playNextSongButton.setOpacity(1);
-  }
-
-  @FXML
-  private void onlightDownNextButton() {
-    playNextSongButton.setOpacity(0.7);
-  }
-
-  private void setImageCover(int index) {
-    // Switches image cover to match song name
-    if (index == 0) {
-      musicCover.setImage(image1);
-    } else if (index == 1) {
-      musicCover.setImage(image2);
-    } else if (index == 2) {
-      musicCover.setImage(image3);
-    } else if (index == 3) {
-      musicCover.setImage(image4);
-    } else if (index == 4) {
-      musicCover.setImage(image5);
-    } else if (index == 5) {
-      musicCover.setImage(image6);
-    } else if (index == 6) {
-      musicCover.setImage(image7);
-    } else if (index == 7) {
-      musicCover.setImage(image8);
-    }
   }
 }
