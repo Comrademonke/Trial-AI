@@ -57,6 +57,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   @FXML private Label robotTextDisplay;
   @FXML private ImageView rotatingCassetteTape;
   @FXML private ImageView rotatingCassetteTape1;
+  @FXML private Label instructionLabel;
 
   @Override
   @FXML
@@ -69,7 +70,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
 
     createBeatGrid();
 
-    robotTextDisplay.setText("     Choose Song to\r\n" + "⬇Insert beats below⬇");
+    robotTextDisplay.setText("Complete the \r\n" + "pattern first!");
 
     // Disable and turn visibility off the cassette tape
     cassetteTape.setVisible(false);
@@ -142,19 +143,8 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
 
     cassetteTape.setOpacity(0.8);
 
-    // Set timer for each text
-    robotTextDisplay.setText("Generating beats...");
-    PauseTransition pauseText = new PauseTransition(Duration.seconds(3));
-    pauseText.setOnFinished(e -> robotTextDisplay.setText("Scanning for \r\n" + "copyright....."));
-    pauseText.play();
-    PauseTransition pauseText2 = new PauseTransition(Duration.seconds(6));
-    pauseText2.setOnFinished(
-        e -> {
-          // Displays last text and begins rotating casette tape
-          robotTextDisplay.setText("Playing new song");
-          rotateCasetteTape();
-        });
-    pauseText2.play();
+    rotateCasetteTape();
+    robotTextDisplay.setText("YOU WIN!");
   }
 
   private void createBeatGrid() {
@@ -225,6 +215,8 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   }
 
   private void onPatternCorrect() {
+    instructionLabel.setText("Drag cassette tape onto Ai Witness");
+    robotTextDisplay.setText("Drag cassette \r\n" + "tape HERE");
     onTurnOnCassetteTape();
   }
 
