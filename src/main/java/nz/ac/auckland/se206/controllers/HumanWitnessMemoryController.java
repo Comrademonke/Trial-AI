@@ -9,9 +9,10 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -51,6 +52,8 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   private double targetAreaSize = 200;
   private Timeline movingBarTimeline;
   private MediaPlayer[] soundPlayers = new MediaPlayer[rows];
+  private Image mute = new Image(getClass().getResourceAsStream("/images/mute.jpg"));
+  private Image unmute = new Image(getClass().getResourceAsStream("/images/unmute.jpg"));
 
   @FXML private Rectangle movingBar;
   @FXML private GridPane beatGrid;
@@ -58,14 +61,12 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   @FXML private Label timer;
   @FXML private ImageView cassetteTape;
   @FXML private VBox flashbackMessage;
-  @FXML private Label songLabel;
-  @FXML private ImageView musicCover;
-  @FXML private Button playPreviousSongButton;
-  @FXML private Button playNextSongButton;
   @FXML private Label robotTextDisplay;
   @FXML private ImageView rotatingCassetteTape;
   @FXML private ImageView rotatingCassetteTape1;
   @FXML private Label instructionLabel;
+  @FXML private ToggleButton soundButton;
+  @FXML private ImageView muteCover;
 
   @Override
   @FXML
@@ -119,6 +120,12 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
     soundPlayers[0] = new MediaPlayer(sound1);
     soundPlayers[1] = new MediaPlayer(sound2);
     soundPlayers[2] = new MediaPlayer(sound3);
+
+    // Setting mute cover and volume
+    muteCover.setImage(unmute);
+    soundPlayers[0].setVolume(0.1);
+    soundPlayers[1].setVolume(0.1);
+    soundPlayers[2].setVolume(0.1);
   }
 
   private void setupMovingBar() {
@@ -343,5 +350,21 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   private void onGoBack(ActionEvent event) throws ApiProxyException, IOException {
     movingBarTimeline.stop();
     App.setRoot("room");
+  }
+
+  @FXML
+  private void onMuteOrUnmute(ActionEvent event) {
+    // Toggles cover and volume
+    if (soundButton.isSelected()) {
+      soundPlayers[0].setVolume(0);
+      soundPlayers[1].setVolume(0);
+      soundPlayers[2].setVolume(0);
+      muteCover.setImage(mute);
+    } else {
+      soundPlayers[0].setVolume(0.1);
+      soundPlayers[1].setVolume(0.1);
+      soundPlayers[2].setVolume(0.1);
+      muteCover.setImage(unmute);
+    }
   }
 }

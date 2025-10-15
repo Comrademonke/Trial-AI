@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -110,7 +111,7 @@
             <Rectangle fx:id="movingBar" arcHeight="5.0" arcWidth="5.0" fill="#00ffba" height="182.0" layoutX="507.0" layoutY="336.0" opacity="0.7" stroke="#00ffba" strokeType="INSIDE" strokeWidth="3.0" width="2.0" />
             <Label fx:id="instructionLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="399.0" layoutY="212.0" prefHeight="66.0" prefWidth="681.0" style="-fx-background-color: black;" text="QUICK! CLICK ON THE SQUARES TO MAKE A SONG " textFill="WHITE">
                <font>
-                  <Font size="20.0" />
+                  <Font size="28.0" />
                </font>
             </Label>
             <Label fx:id="instructionLabel1" alignment="CENTER" contentDisplay="CENTER" layoutX="914.0" layoutY="270.0" prefHeight="30.0" prefWidth="166.0" style="-fx-background-color: black;" text="HINT: Colour the border" textFill="RED">
@@ -133,6 +134,18 @@
                   <Image url="@../images/sound3.jpg" />
                </image>
             </ImageView>
+            <ToggleButton fx:id="soundButton" layoutX="1039.0" layoutY="526.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" onAction="#onMuteOrUnmute" prefHeight="33.0" prefWidth="34.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <graphic>
+                  <ImageView fx:id="muteCover" disable="true" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/unmute.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </ToggleButton>
       </children>
     </AnchorPane>
     
