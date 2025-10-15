@@ -67,6 +67,9 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   @FXML private Label instructionLabel;
   @FXML private ToggleButton soundButton;
   @FXML private ImageView muteCover;
+  @FXML private ImageView arrowHint1;
+  @FXML private ImageView arrowHint2;
+  @FXML private ImageView arrowHint3;
 
   @Override
   @FXML
@@ -80,6 +83,9 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
     createBeatGrid();
     setupMovingBar();
     setupSounds();
+
+    // Enable arrow hints
+    setUpHints();
 
     robotTextDisplay.setText("Complete the \r\n" + "pattern first!");
 
@@ -109,6 +115,15 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
             checkIfCassetteInTargetArea();
           }
         });
+  }
+
+  private void setUpHints() {
+    arrowHint1.setVisible(true);
+    arrowHint2.setVisible(false);
+    arrowHint3.setVisible(false);
+    hoveringArrowAnimation(arrowHint1);
+    hoveringArrowAnimation(arrowHint2);
+    hoveringArrowAnimation(arrowHint3);
   }
 
   private void setupSounds() {
@@ -223,6 +238,8 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   }
 
   private void lockCassetteInTarget() {
+    arrowHint2.setVisible(false);
+
     txtaChat.appendText(
         "[Human Witness]: Don't worry about copyright the AI always checks"
             + " before playing, even when it comes to creating music. \n\n");
@@ -239,6 +256,8 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
 
     rotateCasetteTape();
     robotTextDisplay.setText("SONG CREATED!\r\n" + "YOU WIN!");
+
+    instructionLabel.setText("YOU WIN!");
   }
 
   private void createBeatGrid() {
@@ -313,6 +332,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
     instructionLabel.setText("Drag cassette tape onto Ai Witness");
     robotTextDisplay.setText("Drag cassette \r\n" + "tape HERE");
     txtaChat.appendText("[Human Witness]: Great choice of beats! \n\n");
+    arrowHint3.setVisible(true);
     onTurnOnCassetteTape();
   }
 
@@ -366,5 +386,27 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
       soundPlayers[2].setVolume(0.1);
       muteCover.setImage(unmute);
     }
+  }
+
+  @FXML
+  private void onFirstMouseClick() {
+    arrowHint1.setVisible(false);
+  }
+
+  @FXML
+  private void onCassetteClick() {
+    arrowHint2.setVisible(true);
+    arrowHint3.setVisible(false);
+  }
+
+  private void hoveringArrowAnimation(ImageView arrow) {
+    // floating animation
+    TranslateTransition floatTransition = new TranslateTransition(Duration.millis(1500), arrow);
+    floatTransition.setFromY(0);
+    floatTransition.setToY(-15);
+    floatTransition.setAutoReverse(true);
+    floatTransition.setCycleCount(TranslateTransition.INDEFINITE);
+
+    floatTransition.play();
   }
 }
