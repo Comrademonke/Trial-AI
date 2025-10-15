@@ -45,7 +45,8 @@
                   <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"  text="Sorry! You can't make a decision until you have chatted to all 3 characters!" textAlignment="CENTER" wrappingWidth="490.8764953613281">
                      <font>
                         <Font name="Futura Bold" size="40.0" />
-                     </font></Text>
+                     </font>
+                  </Text>
                </children>
             </StackPane>
 
