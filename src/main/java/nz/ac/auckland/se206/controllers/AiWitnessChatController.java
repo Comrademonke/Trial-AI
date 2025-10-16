@@ -182,7 +182,7 @@ public class AiWitnessChatController extends ChatControllerCentre {
       String finalComment = comment;
       Platform.runLater(
           () -> {
-            txtaChat.appendText("AI Witness: " + finalComment + "\n\n");
+            txtaChat.appendText("[AI Witness]: " + finalComment + "\n\n");
           });
     }
   }
