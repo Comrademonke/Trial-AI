@@ -33,7 +33,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
 
   private final int rows = 3;
   private final int cols = 5;
-  private final double BEAT_DURATION = 500;
+  private final double beatDuration = 500;
   private final Rectangle[][] cells = new Rectangle[rows][cols];
   private final boolean[][] pattern = new boolean[rows][cols];
 
@@ -155,16 +155,16 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
     movingBarTimeline =
         new Timeline(
             new KeyFrame(Duration.ZERO, e -> moveBar(0)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 0.5), e -> moveBar(0.5)),
-            new KeyFrame(Duration.millis(BEAT_DURATION), e -> moveBar(1)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 1.5), e -> moveBar(1.5)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 2), e -> moveBar(2)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 2.5), e -> moveBar(2.5)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 3), e -> moveBar(3)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 3.5), e -> moveBar(3.5)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 4), e -> moveBar(4)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 4.5), e -> moveBar(4.5)),
-            new KeyFrame(Duration.millis(BEAT_DURATION * 5), e -> moveBar(0)));
+            new KeyFrame(Duration.millis(beatDuration * 0.5), e -> moveBar(0.5)),
+            new KeyFrame(Duration.millis(beatDuration), e -> moveBar(1)),
+            new KeyFrame(Duration.millis(beatDuration * 1.5), e -> moveBar(1.5)),
+            new KeyFrame(Duration.millis(beatDuration * 2), e -> moveBar(2)),
+            new KeyFrame(Duration.millis(beatDuration * 2.5), e -> moveBar(2.5)),
+            new KeyFrame(Duration.millis(beatDuration * 3), e -> moveBar(3)),
+            new KeyFrame(Duration.millis(beatDuration * 3.5), e -> moveBar(3.5)),
+            new KeyFrame(Duration.millis(beatDuration * 4), e -> moveBar(4)),
+            new KeyFrame(Duration.millis(beatDuration * 4.5), e -> moveBar(4.5)),
+            new KeyFrame(Duration.millis(beatDuration * 5), e -> moveBar(0)));
 
     movingBarTimeline.setCycleCount(Timeline.INDEFINITE);
     movingBarTimeline.play();
@@ -335,7 +335,7 @@ public class HumanWitnessMemoryController extends ChatControllerCentre {
   private void onPatternCorrect() {
     movingBarTimeline.stop();
     instructionLabel.setText("Drag cassette tape onto the Defendant");
-    robotTextDisplay.setText("Drag cassette \r\n" + "tape HERE");
+    robotTextDisplay.setText("Drag cassette \r\n" + "tape BELOW");
     txtaChat.appendText("[Human Witness]: Great choice of beats! \n\n");
     arrowHint3.setVisible(true);
     onTurnOnCassetteTape();
