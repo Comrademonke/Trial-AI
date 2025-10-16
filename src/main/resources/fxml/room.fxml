@@ -22,7 +22,7 @@
           </image>
         </ImageView>
         
-        <Rectangle fx:id="rectPerson1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="543.0" layoutX="-5.0" layoutY="192.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="317.0">
+        <Rectangle fx:id="rectPerson1" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff" focusTraversable="true" height="543.0" layoutX="-5.0" layoutY="192.0" onMouseClicked="#handleRectangleClick" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="293.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Rectangle>
@@ -54,18 +54,18 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-        <Label layoutX="358.0" layoutY="54.0" style="-fx-background-color: rgba(20, 74, 92, 0.55);" stylesheets="@../css/humanWitnessStyle.css" text=" Click on each character to find out! " textFill="WHITE">
+        <Label layoutX="385.0" layoutY="48.0" style="-fx-background-color: rgba(20, 74, 92, 0.55);" stylesheets="@../css/humanWitnessStyle.css" text=" Click on each character to find out! " textFill="WHITE">
           <font>
             <Font name="Futura Bold" size="24.0" />
           </font>
         </Label>
-        <Label layoutX="277.0" layoutY="25.0" style="-fx-background-color: rgba(20, 74, 92, 0.55);" stylesheets="@../css/humanWitnessStyle.css" text=" Did the AI unethically steal from music artists? " textFill="WHITE">
+        <Label layoutX="331.0" layoutY="19.0" style="-fx-background-color: rgba(20, 74, 92, 0.55);" stylesheets="@../css/humanWitnessStyle.css" text=" Did the AI unethically steal from musicians? " textFill="WHITE">
           <font>
             <Font name="Futura Bold" size="24.0" />
           </font>
         </Label>
 
-        <Label fx:id="timer" layoutX="941.0" layoutY="24.0" prefHeight="63.0" prefWidth="155.0" stylesheets="@../css/humanWitnessStyle.css" text="5:00" textFill="WHITE">
+        <Label fx:id="timer" layoutX="937.0" layoutY="41.0" prefHeight="63.0" prefWidth="155.0" stylesheets="@../css/humanWitnessStyle.css" text="5:00" textFill="WHITE">
           <font>
             <Font size="50.0" />
           </font>

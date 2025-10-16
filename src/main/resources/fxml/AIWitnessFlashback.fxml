@@ -31,7 +31,7 @@
                 <Image url="@../images/2.png" />
             </image>
           </ImageView>
-          <Label fx:id="timer" layoutX="941.0" layoutY="24.0" prefHeight="63.0" prefWidth="151.0" stylesheets="@../css/humanWitnessStyle.css" text="5:00" textFill="WHITE">
+          <Label fx:id="timer" layoutX="937.0" layoutY="41.0" prefHeight="63.0" prefWidth="155.0" stylesheets="@../css/humanWitnessStyle.css" text="5:00" textFill="WHITE">
             <font>
                 <Font name="Book Antiqua" size="50.0" />
             </font>
